@@ -1,4 +1,5 @@
-﻿namespace BoH.CLI;
+﻿
+namespace BoH.CLI;
 
 using BoH.Interfaces;
 using BoH.Services;
@@ -6,8 +7,12 @@ using BoH.Models;
 using BoH.GameLogic;
 using System.Diagnostics;
 
+
+
+
 public class Program
 {
+    [STAThread]
 
     /// <summary>
     /// Точка входа в приложение. Отвечает за запуск игры и обработку игровых раундов.
@@ -15,6 +20,7 @@ public class Program
     /// <param name="args">Аргументы командной строки (не используются).</param>
     public static async Task Main(string[] args)
     {
+
         // Сетап игры
         // ------------------------------------------------------------------------------------------------------
         GameBoardService gameBoardService = new GameBoardService();
@@ -76,5 +82,6 @@ public class Program
 
         // ...
     }
+
 
 }
