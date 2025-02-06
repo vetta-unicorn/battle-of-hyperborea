@@ -3,36 +3,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:battle_GUI.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="1400"
              x:Class="battle_GUI.Views.MainView"
              x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:MainViewModel />
-  </Design.DataContext>
-
-	<StackPanel>
-		<Border Margin="5" CornerRadius="10" Background="Pink">
+	
+	<StackPanel Width="1100">
+		<Border Margin="5" CornerRadius="10" Background="LightGreen">
 			<TextBlock Margin="5"
-                       FontSize="24"
-                       HorizontalAlignment="Center"
-                       Text="Temperature Converter">
+				 FontSize="24"
+				 HorizontalAlignment="Center"
+				 Text="Battle of hyperborea">
 			</TextBlock>
 		</Border>
 
-		<Grid ShowGridLines="True" Margin="5"
-          ColumnDefinitions="120, 100"
-          RowDefinitions="Auto, Auto, Auto">
-			<Label Grid.Row="0" Grid.Column="0" Margin="10">Celsius</Label>
-			<TextBox Grid.Row="0" Grid.Column="1" Margin="0 5" Text="0"/>
-			<Label Grid.Row="1" Grid.Column="0" Margin="10">Fahrenheit</Label>
-			<TextBox Grid.Row="1"  Grid.Column="1" Margin="0 5" Text="0"/>
-			<Button Grid.Row="2"  Grid.Column="1">Calculate</Button>
+		<StackPanel Orientation="Horizontal">
+		<StackPanel Width="500" Height="500">
 
-		</Grid>
-
-		<Button HorizontalAlignment="Center">Calculate</Button>
-
+			<Grid x:Name="MainGrid">
+				<!-- The grid will be populated dynamically in code-behind -->
+			</Grid>
+			
+	  </StackPanel>
 	</StackPanel>
+	</StackPanel>
+	
 </UserControl>

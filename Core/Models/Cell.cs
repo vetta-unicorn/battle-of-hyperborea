@@ -12,6 +12,13 @@ public class Cell : ICell, IIconHolder
     /// <exception cref="ArgumentException">
     /// Выбрасывается, если символ некорректен (например, не является печатным).
     /// </exception>
+    /// 
+
+    public Cell(int x, int y)
+    {
+        Position = (x, y);
+    }
+
     public string Icon
     {
         get => _icon;
