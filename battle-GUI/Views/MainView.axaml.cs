@@ -19,6 +19,7 @@ public partial class MainView : UserControl
         CreateGameBoard(8, 8); // Например, 5x5
         PopulateGrid();
     }
+
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
@@ -46,7 +47,7 @@ public partial class MainView : UserControl
         }
 
         
-// Далее добавляем кнопки как было описано ранее...
+        // Далее добавляем кнопки как было описано ранее...
         for (int x = 0; x < _gameBoard.Width; x++)
         {
             for (int y = 0; y < _gameBoard.Height; y++)
@@ -76,6 +77,9 @@ public partial class MainView : UserControl
         {
             button.Background = new SolidColorBrush(Colors.Pink);
         }
+
+        // сюда сделаем передачу координат как-нибудь
+
     }
 }
 

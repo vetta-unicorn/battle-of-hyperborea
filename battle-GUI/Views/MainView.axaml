@@ -16,6 +16,9 @@
 			</TextBlock>
 		</Border>
 
+		<Button HorizontalAlignment="Right" Margin="10, 10, 200, 10">Start new game!</Button>
+
+
 		<StackPanel Orientation="Horizontal">
 		<StackPanel Width="500" Height="500">
 
@@ -25,6 +28,7 @@
 			
 	  </StackPanel>
 	</StackPanel>
+		
 	</StackPanel>
 	
 </UserControl>
