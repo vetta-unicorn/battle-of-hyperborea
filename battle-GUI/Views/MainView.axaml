@@ -6,55 +6,63 @@
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="1400"
              x:Class="battle_GUI.Views.MainView"
              x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE, 
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:MainViewModel />
-  </Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
 
 	<StackPanel Width="1100">
 		<Border Margin="5" CornerRadius="10" Background="LightGreen">
 			<TextBlock Margin="5"
-                       FontSize="24"
-                       HorizontalAlignment="Center"
-                       Text="Temperature Converter">
+				 FontSize="24"
+				 HorizontalAlignment="Center"
+				 Text="Battle of hyperborea">
 			</TextBlock>
 		</Border>
 
 		<StackPanel Orientation="Horizontal">
-		<StackPanel Width="500" Height="500">
-			<Grid ShowGridLines="True" ColumnDefinitions="*,*,*,*,*,*,*,*" RowDefinitions="*,*,*,*,*,*,*,*"  Margin="4">
-				
-
-				<!-- Кнопки будут добавлены программно в коде C# -->
-				<Button Click="ClickHandler" Grid.Row="0"  Grid.Column="0">Test</Button>
-				<Button Grid.Row="1"  Grid.Column="1">Test</Button>
-				<Button Grid.Row="2"  Grid.Column="2">Test</Button>
-				<Button Grid.Row="3"  Grid.Column="3">Test</Button>
-				<Button Grid.Row="4"  Grid.Column="4">Test</Button>
-				<Button Grid.Row="5"  Grid.Column="5">Test</Button>
-				<Button Grid.Row="6"  Grid.Column="6">Test</Button>
-				<Button Grid.Row="7"  Grid.Column="7">Test</Button>
-				
-			</Grid>
+			<StackPanel Width="500" Height="500">
+				<Grid Background="LightGray" ShowGridLines="True" ColumnDefinitions="*,*,*,*,*,*,*,*" RowDefinitions="*,*,*,*,*,*,*,*"  Margin="4">
 
 
-		  </StackPanel>
+					<!-- Кнопки будут добавлены программно в коде C# -->
+
+					<Button Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="62" Height="62" Content="0" Click="OnButtonClick"/>
+					<Button Grid.Row="1"  Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="62" Height="62" Content="0" Click="OnButtonClick"/>
+					<Button Grid.Row="2"  Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="62" Height="62" Content="0" Click="OnButtonClick"/>
+					<Button Grid.Row="3"  Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="62" Height="62" Content="0" Click="OnButtonClick"/>
+					<Button Grid.Row="4"  Grid.Column="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="62" Height="62" Content="0" Click="OnButtonClick"/>
+					<Button Grid.Row="5"  Grid.Column="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="62" Height="62" Content="0" Click="OnButtonClick"/>
+					<Button Grid.Row="6"  Grid.Column="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="62" Height="62" Content="0" Click="OnButtonClick"/>
+					<Button Grid.Row="7"  Grid.Column="7" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="62" Height="62" Content="0" Click="OnButtonClick"/>
+
+				</Grid>
+
+
+			</StackPanel>
 
 
 			<StackPanel Margin="30" >
-				
-				<TextBlock Margin="0 10 0 5">Actions:</TextBlock>
-				<RadioButton GroupName="First Group"
-						  Content="GO!"/>
-				<RadioButton GroupName="First Group"
-						  Content="Attack"/>
-				<RadioButton GroupName="First Group"
-						  Content="Ability"/>
-				
 
-				
+				<TextBlock Margin="0 10 0 5">Actions:</TextBlock>
+				<RadioButton Name="Go" GroupName="First Group"
+				 Content="GO!"/>
+				<RadioButton Name="Attack" GroupName="First Group"
+				 Content="Attack"/>
+				<RadioButton Name="Ability" GroupName="First Group"
+				 Content="Ability"/>
+				<RadioButton Name="Skip" GroupName="First Group"
+				 Content="Skip"/>
+				<RadioButton Name="End" GroupName="First Group"
+				 Content="End Turn"/>
+
+
+
 			</StackPanel>
-		</StackPanel>		
+			<Button  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="200" Height="50" Content="START" Click="OnButtonClick" />
+		</StackPanel>
+
 	</StackPanel>
+
 </UserControl>
