@@ -9,4 +9,6 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="battle_GUI">
         <views:MainView />
+	
+	
 </Window>
