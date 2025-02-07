@@ -104,7 +104,7 @@ public partial class MainView : UserControl
                     case 0:
                         {
                             
-                            button.Background = new SolidColorBrush(Colors.Gray);
+                            button.Background = new SolidColorBrush(Colors.LightGray);
 
                             //тут скрытие характеристик
                             RadioVisible(false);

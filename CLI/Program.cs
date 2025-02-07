@@ -36,10 +36,6 @@ public class Program
             new RusWarrior(),
             new LizardArcher(),
             new LizardWarrior(),
-            new RusArcher(),
-            new RusWarrior(),
-            new LizardArcher(),
-            new LizardWarrior()
         };
 
         players[0] = new Player("Rus");
