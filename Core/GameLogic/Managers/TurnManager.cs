@@ -165,7 +165,6 @@ public class TurnManager : ITurnManager
             {
                 case ActionType.Move:
                     ArgumentNullException.ThrowIfNull(availableCells);
-                    Console.WriteLine(availableCells.Count);
                     if (target is ICell destination)
                     {
                         _availableUnitsCells.Remove(_selectedUnit.OccupiedCell);

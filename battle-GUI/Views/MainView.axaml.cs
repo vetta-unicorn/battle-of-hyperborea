@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 
 namespace battle_GUI.Views;
@@ -17,6 +18,18 @@ namespace battle_GUI.Views;
 public partial class MainView : UserControl
 {
     private GameBoard _gameBoard;
+
+    //GameController gameController = new GameController(gameBoardService);
+    //как то надо вынести
+
+    // КУДА ЭТУ ЗАСУНУТЬ и КАК
+    // TurnManager turnManager = new TurnManager(gameBoard, players, actionHandler, scannerHandler);
+    //возможно кудато надо или глобально добавить class TurnManager : ITurnManager ну высмысле экземпляр
+    //из прикрепленного, ищи там, т.к. нихуй не рабоатть
+
+    //возможно вынести игроков сюда, подумаю над этим
+    Player[] players = new Player[2];
+    int playnow;
 
     public MainView()
     {
@@ -73,23 +86,10 @@ public partial class MainView : UserControl
         }
     }
 
-    //private void Button_Click(object sender, RoutedEventArgs e)
-    //{
-    //    var button = sender as Button;
-    //    var cell = button.Tag as Cell;
-
-    //    if (cell != null)
-    //    {
-    //        button.Background = new SolidColorBrush(Colors.Pink);
-    //    }
-
-    //    // сюда сделаем передачу координат как-нибудь
-
-    //}
-
-    //возможно придется все перенести в функцию
+    
     private void Button_Click(object sender, RoutedEventArgs e)
     {
+
         var button = sender as Button;
         var cell = button.Tag as Cell;
 
@@ -99,64 +99,84 @@ public partial class MainView : UserControl
         {
 
 
-            int i = ActionsFlag();
+            int index = ActionsFlag();
 
 
             if (this.FindControl<TextBlock>("ActionText").IsVisible == false)
             {
-                RadioVisible(true);
+                
                 button.Background = new SolidColorBrush(Colors.Green);
 
-                //тут красится выбранная клетка
-                //и показываются характеристики персонажа
-                //и область???
-                //посмотри AbilityNotification в папке CLI
+                try { SelectUnit(ICell unitCell)}
+                catch(InvalidOperationException) 
+                {
+                    this.FindControl<TextBlock>("Errors").Text="The unit is unavailable for selection.";
+                }
+
+                catch (ArgumentNullException)
+                {
+                    this.FindControl<TextBlock>("Errors").Text = "There was no unit in the cage.";
+                }
+
+                finally 
+                {
+                    RadioVisible(true);
+                    //и показываются характеристики персонажа
+                    //и область???
+                    // в turnManager.SelectUnit(gameBoard[0, 0]); передать координаты
+
+
+                }
+
 
 
 
             }
             else
             {
-                switch (i)
+                switch (index)
                 {
-                    case 0:
+                    case 0: //бездействие
                         {
-
-                            button.Background = new SolidColorBrush(Colors.Gray);
-
-                            //тут скрытие характеристик
-                            RadioVisible(false);
-
-                            break;
-                        }
-                    case 1000:
-                        {
-                            throw new Exception("Ты не выбрал кнопку"); //ну или вывод сообщения?!
-                        }
-
-
-                    case 5:
-                        {
-                            //конец одной из команд, если flag=5 то конец хода.
-                            //передача прав другому игроку (додумать, т.к. мдам)
-                            //turnManager.EndTurn();
-                            //gameController.CheckVictoryCondition(players);
-                            //turnManager.StartNewRound(players[1]);
-
-                            RadioVisible(false);
                             break;
                         }
 
-                    default:
-                        //тут действие из TurnManager
-                        //обновление поля
+                    case 3:  //Ability
+                        {
 
+                            //тут ну action это (ActionType)index), лист клеток это тот который отсканирован? цель это клетка на коробую нажали? 
+                            //нужны координаты
+                            // выбор абилити доделыается
+                            turnManager.ProcessPlayerAction((ActionType)index), List<ICell> ? availableCells, object ? target , IAbility ? usedAbility )
+                            break;
+                        }
+
+                    case 5: //end of the round
+                        {
+
+                            if (gameController.CheckVictoryCondition(players))
+                            {
+                                //тут либо надо что то сделать...мб удалить доску?
+                            }
+                            else
+                            {
+                                playnow = (playnow + 1) % 2;
+                                turnManager.StartNewRound(players[playnow]);
+                            }
+                            
+                            break;
+                        }
+
+                    default: //go and attack
+                        {
+                            //(выше конкретней)
+                            turnManager.ProcessPlayerAction((ActionType)index), List<ICell> ? availableCells, object ? target );
+                            break;
+                        }
+
+
+                    
                         RadioVisible(false);
-                        break;
-
-
-
-
 
                 }
 
@@ -168,18 +188,26 @@ public partial class MainView : UserControl
 
 
 
-    private int ActionsFlag() //попробовать улучшить???
+    private int ActionsFlag()
     {
-        int flag;
-        if (this.FindControl<RadioButton>("None").IsChecked == true) flag = 0;
-        if (this.FindControl<RadioButton>("Go").IsChecked == true) flag = 1;
-        if (this.FindControl<RadioButton>("Attack").IsChecked == true) flag = 2;
-        if (this.FindControl<RadioButton>("Ability").IsChecked == true) flag = 3;
-        if (this.FindControl<RadioButton>("Skip").IsChecked == true) flag = 4;
-        if (this.FindControl<RadioButton>("End").IsChecked == true) flag = 5;
-        else flag = 1000;
+        var actions = new Dictionary<string, int>
+     {
+        { "None", 0 },
+        { "Go", 1 },
+        { "Attack", 2 },
+        { "Ability", 3 },
+        { "Skip", 4 },
+        { "End", 5 }
+     };
 
-        return (flag);
+        foreach (var action in actions)
+        {
+                        
+          return action.Value;
+            
+        }
+        return 0;
+
     }
 
     private void RadioVisible(bool isVisible)
@@ -202,12 +230,14 @@ public partial class MainView : UserControl
 
     private async void StartGame_Click(object sender, RoutedEventArgs e)
     {
+        var button = sender as Button;
+        button.Background = new SolidColorBrush(Colors.Pink);
         // Сетап игры
         // ------------------------------------------------------------------------------------------------------
         GameBoardService gameBoardService = new GameBoardService();
         GameController gameController = new GameController(gameBoardService);
         await Task.Delay(100);
-        Player[] players = new Player[2];
+        
         List<IUnit> units = new(){
             new RusArcher(),
             new RusWarrior(),
@@ -222,6 +252,7 @@ public partial class MainView : UserControl
 
         players[0] = new Player("Rus");
         players[1] = new Player("Lizard");
+        playnow = 0;
 
         GameBoard gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, units, players);
 
@@ -230,7 +261,12 @@ public partial class MainView : UserControl
         List<ICell> scannedCells = new();
 
         Render(gameBoard);
+
+
+       
     }
+
+
 
     // графический рендер
     public void Render(IGameBoard gameBoard)
@@ -247,7 +283,7 @@ public partial class MainView : UserControl
                     if (cell.Content == null)
                     {
                         button.Background = new SolidColorBrush(Colors.LightGray);
-                        button.Content = "";
+                        button.Content = " ";
 
                     }
 
@@ -279,39 +315,18 @@ public partial class MainView : UserControl
                             button.Background = new SolidColorBrush(Colors.LightPink);
                             button.Content = button.Content = $"{cell.Icon}";
                         }
+
+                        
                     }
+                    else
+                        {
+                            button.Background = new SolidColorBrush(Colors.Black);
+                            button.Content = button.Content = $"{cell.Icon}";
+                        }
                 }
             }
         }
     }
 
-    //public void ScanRender(IGameBoard gameBoard, List<ICell> scannedCells)
-    //{
-    //    int size = gameBoard.Width;
-    //    PrintHorizontalBorder(size);
-    //    for (int y = 0; y < size; y++)
-    //    {
-    //        for (int x = 0; x < gameBoard.Height; x++)
-    //        {
-    //            if (gameBoard[x, y] is Cell cell)
-    //            {
-    //                if (scannedCells.Contains(cell))
-    //                {
-    //                    // Выводим специальный символ, если клетка отсканирована: "!" для юнита, "#" для других объектов
-    //                    if (cell.Content is IUnit)
-    //                        Console.Write("| ! ");
-    //                    else
-    //                        Console.Write("| # ");
-    //                }
-    //                else
-    //                {
-    //                    Console.Write($"| {cell.Icon} ");
-    //                }
-    //            }
-    //        }
-    //        Console.WriteLine("|");
-    //        PrintHorizontalBorder(size);
-    //    }
-    //}
 }
 
