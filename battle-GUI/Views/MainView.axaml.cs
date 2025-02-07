@@ -16,7 +16,7 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        CreateGameBoard(8, 8); // Например, 5x5
+        CreateGameBoard(8, 8); 
         PopulateGrid();
     }
 
@@ -68,18 +68,134 @@ public partial class MainView : UserControl
         }
     }
 
+
+    //возможно придется все перенести в функцию
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         var button = sender as Button;
         var cell = button.Tag as Cell;
 
+        //тут координаты надо посмотреть CLI
+
         if (cell != null)
         {
+            
+
+            int i = ActionsFlag();
+            
+
+            if (this.FindControl<TextBlock>("ActionText").IsVisible == false)
+            {
+                RadioVisible(true);
+                button.Background = new SolidColorBrush(Colors.Green);
+
+                //тут красится выбранная клетка
+                //и показываются характеристики персонажа
+                //и область???
+                //посмотри AbilityNotification в папке CLI
+
+
+            }
+            else
+            {
+                switch (i)
+                {
+                    case 0:
+                        {
+                            
+                            button.Background = new SolidColorBrush(Colors.Gray);
+
+                            //тут скрытие характеристик
+                            RadioVisible(false);
+
+                            break;
+                        }
+                    case 1000:
+                        {
+                            throw new Exception("Ты не выбрал кнопку"); //ну или вывод сообщения?!
+                        }
+                    
+                        
+                    case 5:
+                        {
+                            //конец одной из команд, если flag=5 то конец хода.
+                            //передача прав другому игроку (додумать, т.к. мдам)
+                            //turnManager.EndTurn();
+                            //gameController.CheckVictoryCondition(players);
+                            //turnManager.StartNewRound(players[1]);
+
+                            RadioVisible(false);
+                            break;
+                        }
+                    
+                    default:
+                        //тут действие из TurnManager
+                        //обновление поля
+
+                        RadioVisible(false);
+                        break;
+
+
+
+
+
+                }
+
+            }
+
+          //тут обновление поля  
+        }
+    }
+
+   
+
+    private int ActionsFlag () //попробовать улучшить???
+    {
+        int flag;
+        if (this.FindControl<RadioButton>("None").IsChecked == true) flag = 0;
+        if (this.FindControl<RadioButton>("Go").IsChecked==true) flag = 1;
+        if (this.FindControl<RadioButton>("Attack").IsChecked == true) flag = 2;
+        if (this.FindControl<RadioButton>("Ability").IsChecked == true) flag = 3;
+        if (this.FindControl<RadioButton>("Skip").IsChecked == true) flag = 4;
+        if (this.FindControl<RadioButton>("End").IsChecked == true) flag = 5;
+        else flag = 1000;
+
+        return (flag);
+    }
+
+    private void RadioVisible(bool isVisible)
+    {
+        var Text = this.FindControl<TextBlock >("ActionText");
+        Text.IsVisible= isVisible;
+        var None = this.FindControl<RadioButton>("None");
+        None.IsVisible = isVisible;
+        var Go = this.FindControl<RadioButton>("Go");
+        Go.IsVisible = isVisible;
+        var Attack = this.FindControl<RadioButton>("Attack");
+        Attack.IsVisible = isVisible;
+        var Ability = this.FindControl<RadioButton>("Ability");
+        Ability.IsVisible = isVisible;
+        var Skip = this.FindControl<RadioButton>("Skip");
+        Skip.IsVisible = isVisible;
+        var End = this.FindControl<RadioButton>("End");
+        End.IsVisible = isVisible;
+    }
+     
+    private void Start_Click(object sender, RoutedEventArgs e)
+    {
+        var button = sender as Button;
+        
+
+        if (button != null)
+        {
             button.Background = new SolidColorBrush(Colors.Pink);
+            RadioVisible(true);
         }
 
-        // сюда сделаем передачу координат как-нибудь
+        
 
     }
+
+    
 }
 
