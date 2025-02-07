@@ -16,7 +16,7 @@
 			</TextBlock>
 		</Border>
 
-		<Button HorizontalAlignment="Right" Margin="10, 10, 200, 10">Start new game!</Button>
+		<Button Click="StartGame_Click" HorizontalAlignment="Right" Margin="10, 10, 200, 10">Start a new game!</Button>
 
 
 		<StackPanel Orientation="Horizontal">
@@ -27,8 +27,23 @@
 			</Grid>
 			
 	  </StackPanel>
-	</StackPanel>
-		
+			<StackPanel HorizontalAlignment="Right"  Margin="200, 30, 30, 30" >
+
+				<TextBlock Name="ActionText" IsVisible="False" Margin="0 10 0 5">Actions:</TextBlock>
+				<RadioButton Name="None" IsVisible="False" GroupName="radioButtonGroup"
+				 Content="None"/>
+				<RadioButton Name="Go" IsVisible="False" GroupName="radioButtonGroup"
+				 Content="GO!"/>
+				<RadioButton Name="Attack" IsVisible="False" GroupName="radioButtonGroup"
+				 Content="Attack"/>
+				<RadioButton Name="Ability" IsVisible="False" GroupName="radioButtonGroup"
+				 Content="Ability"/>
+				<RadioButton Name="Skip" IsVisible="False" GroupName="radioButtonGroup"
+				 Content="Skip"/>
+				<RadioButton Name="End" IsVisible="False" GroupName="radioButtonGroup"
+				 Content="End Turn"/>
+			</StackPanel>
+		</StackPanel>
 	</StackPanel>
 	
 </UserControl>
