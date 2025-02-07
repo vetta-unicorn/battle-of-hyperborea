@@ -95,6 +95,7 @@ public partial class MainView : UserControl
                 //посмотри AbilityNotification в папке CLI
 
 
+
             }
             else
             {
