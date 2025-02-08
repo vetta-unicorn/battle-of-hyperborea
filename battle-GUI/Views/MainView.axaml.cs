@@ -78,7 +78,8 @@ public partial class MainView : UserControl
                     Width = 62, // Установите желаемую ширину
                     Height = 62 // Установите желаемую высоту
                 };
-                button.Click += Button_Click;
+                //button.Click += Button_Click;
+
                 Grid.SetColumn(button, x);
                 Grid.SetRow(button, y);
                 MainGrid.Children.Add(button);
@@ -87,104 +88,104 @@ public partial class MainView : UserControl
     }
 
     
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
+    //private void Button_Click(object sender, RoutedEventArgs e)
+    //{
 
-        var button = sender as Button;
-        var cell = button.Tag as Cell;
+    //    var button = sender as Button;
+    //    var cell = button.Tag as Cell;
 
-        //тут координаты надо посмотреть CLI
+    //    //тут координаты надо посмотреть CLI
 
-        if (cell != null)
-        {
-
-
-            int index = ActionsFlag();
+    //    if (cell != null)
+    //    {
 
 
-            if (this.FindControl<TextBlock>("ActionText").IsVisible == false)
-            {
+    //        int index = ActionsFlag();
+
+
+    //        if (this.FindControl<TextBlock>("ActionText").IsVisible == false)
+    //        {
                 
-                button.Background = new SolidColorBrush(Colors.Green);
+    //            button.Background = new SolidColorBrush(Colors.Green);
 
-                try { SelectUnit(ICell unitCell)}
-                catch(InvalidOperationException) 
-                {
-                    this.FindControl<TextBlock>("Errors").Text="The unit is unavailable for selection.";
-                }
+    //            try { SelectUnit(ICell unitCell)}
+    //            catch(InvalidOperationException) 
+    //            {
+    //                this.FindControl<TextBlock>("Errors").Text="The unit is unavailable for selection.";
+    //            }
 
-                catch (ArgumentNullException)
-                {
-                    this.FindControl<TextBlock>("Errors").Text = "There was no unit in the cage.";
-                }
+    //            catch (ArgumentNullException)
+    //            {
+    //                this.FindControl<TextBlock>("Errors").Text = "There was no unit in the cage.";
+    //            }
 
-                finally 
-                {
-                    RadioVisible(true);
-                    //и показываются характеристики персонажа
-                    //и область???
-                    // в turnManager.SelectUnit(gameBoard[0, 0]); передать координаты
-
-
-                }
+    //            finally 
+    //            {
+    //                RadioVisible(true);
+    //                //и показываются характеристики персонажа
+    //                //и область???
+    //                // в turnManager.SelectUnit(gameBoard[0, 0]); передать координаты
 
 
+    //            }
 
 
-            }
-            else
-            {
-                switch (index)
-                {
-                    case 0: //бездействие
-                        {
-                            break;
-                        }
 
-                    case 3:  //Ability
-                        {
 
-                            //тут ну action это (ActionType)index), лист клеток это тот который отсканирован? цель это клетка на коробую нажали? 
-                            //нужны координаты
-                            // выбор абилити доделыается
-                            turnManager.ProcessPlayerAction((ActionType)index), List<ICell> ? availableCells, object ? target , IAbility ? usedAbility )
-                            break;
-                        }
+    //        }
+    //        else
+    //        {
+    //            switch (index)
+    //            {
+    //                case 0: //бездействие
+    //                    {
+    //                        break;
+    //                    }
 
-                    case 5: //end of the round
-                        {
+    //                case 3:  //Ability
+    //                    {
 
-                            if (gameController.CheckVictoryCondition(players))
-                            {
-                                //тут либо надо что то сделать...мб удалить доску?
-                            }
-                            else
-                            {
-                                playnow = (playnow + 1) % 2;
-                                turnManager.StartNewRound(players[playnow]);
-                            }
+    //                        //тут ну action это (ActionType)index), лист клеток это тот который отсканирован? цель это клетка на коробую нажали? 
+    //                        //нужны координаты
+    //                        // выбор абилити доделыается
+    //                        turnManager.ProcessPlayerAction((ActionType)index), List<ICell> ? availableCells, object ? target , IAbility ? usedAbility )
+    //                        break;
+    //                    }
+
+    //                case 5: //end of the round
+    //                    {
+
+    //                        if (gameController.CheckVictoryCondition(players))
+    //                        {
+    //                            //тут либо надо что то сделать...мб удалить доску?
+    //                        }
+    //                        else
+    //                        {
+    //                            playnow = (playnow + 1) % 2;
+    //                            turnManager.StartNewRound(players[playnow]);
+    //                        }
                             
-                            break;
-                        }
+    //                        break;
+    //                    }
 
-                    default: //go and attack
-                        {
-                            //(выше конкретней)
-                            turnManager.ProcessPlayerAction((ActionType)index), List<ICell> ? availableCells, object ? target );
-                            break;
-                        }
+    //                default: //go and attack
+    //                    {
+    //                        //(выше конкретней)
+    //                        turnManager.ProcessPlayerAction((ActionType)index), List<ICell> ? availableCells, object ? target );
+    //                        break;
+    //                    }
 
 
                     
-                        RadioVisible(false);
+    //                    RadioVisible(false);
 
-                }
+    //            }
 
-            }
+    //        }
 
-            //тут обновление поля  
-        }
-    }
+    //        //тут обновление поля  
+    //    }
+    //}
 
 
 
