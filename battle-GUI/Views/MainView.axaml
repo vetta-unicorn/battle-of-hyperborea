@@ -6,49 +6,54 @@
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="1400"
              x:Class="battle_GUI.Views.MainView"
              x:DataType="vm:MainViewModel">
-	
-	<StackPanel Width="1100">
-		<Border Margin="5" CornerRadius="10" Background="LightGreen">
-			<TextBlock Margin="5"
-				 FontSize="24"
-				 HorizontalAlignment="Center"
-				 Text="Battle of hyperborea">
-			</TextBlock>
 
-			
-			
-		</Border>
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:MainViewModel />
+	</Design.DataContext>
 
-		<Button Click="StartGame_Click" HorizontalAlignment="Right" Margin="10, 10, 200, 10">Start a new game!</Button>
-		
+		<StackPanel Width="1100">
+			<Border Margin="5" CornerRadius="10" Background="LightGreen">
+				<TextBlock Margin="5"
+					 FontSize="24"
+					 HorizontalAlignment="Center"
+					 Text="Battle of hyperborea">
+				</TextBlock>
 
-		<StackPanel Orientation="Horizontal">
-		<StackPanel Width="500" Height="500">
+			</Border>
 
-			<Grid x:Name="MainGrid">
-				<!-- The grid will be populated dynamically in code-behind -->
-			</Grid>
-			
-	  </StackPanel>
-			<StackPanel HorizontalAlignment="Right"  Margin="200, 30, 30, 30" >
+			<Button HorizontalAlignment="Right" Margin="10, 10, 200, 10">Start a new game!</Button>
 
-				<TextBlock Name="ActionText" IsVisible="False" Margin="0 10 0 5">Actions:</TextBlock>
-				<RadioButton Name="None" IsChecked="True" IsVisible="False" GroupName="radioButtonGroup"
-				 Content="None"/>
-				<RadioButton Name="Go" IsVisible="False" GroupName="radioButtonGroup"
-				 Content="GO!"/>
-				<RadioButton Name="Attack" IsVisible="False" GroupName="radioButtonGroup"
-				 Content="Attack"/>
-				<RadioButton Name="Ability" IsVisible="False" GroupName="radioButtonGroup"
-				 Content="Ability"/>
-				<RadioButton Name="Skip" IsVisible="False" GroupName="radioButtonGroup"
-				 Content="Skip"/>
-				<RadioButton Name="End" IsVisible="False" GroupName="radioButtonGroup"
-				 Content="End Turn"/>
+
+			<StackPanel Orientation="Horizontal">
+				<StackPanel Width="500" Height="500">
+
+					<Grid x:Name="MainGrid" ColumnDefinitions="62, 62, 62, 62, 62, 62, 62, 62" 
+						  RowDefinitions="62, 62, 62, 62, 62, 62, 62, 62" ShowGridLines="True" IsEnabled="True">
+					</Grid>
+
+				</StackPanel>
+				<StackPanel HorizontalAlignment="Right"  Margin="200, 30, 30, 30" >
+
+					<TextBlock Name="ActionText" IsVisible="False" Margin="0 10 0 5">Actions:</TextBlock>
+					<RadioButton Name="None" IsChecked="True" IsVisible="False" GroupName="radioButtonGroup"
+					 Content="None"/>
+					<RadioButton Name="Go" IsVisible="False" GroupName="radioButtonGroup"
+					 Content="GO!"/>
+					<RadioButton Name="Attack" IsVisible="False" GroupName="radioButtonGroup"
+					 Content="Attack"/>
+					<RadioButton Name="Ability" IsVisible="False" GroupName="radioButtonGroup"
+					 Content="Ability"/>
+					<RadioButton Name="Skip" IsVisible="False" GroupName="radioButtonGroup"
+					 Content="Skip"/>
+					<RadioButton Name="End" IsVisible="False" GroupName="radioButtonGroup"
+					 Content="End Turn"/>
+				</StackPanel>
+
+				<TextBlock Name="Errors" >   </TextBlock>
 			</StackPanel>
-			
-			<TextBlock Name="Errors" >   </TextBlock>			
 		</StackPanel>
-	</StackPanel>
-	
+
 </UserControl>
+

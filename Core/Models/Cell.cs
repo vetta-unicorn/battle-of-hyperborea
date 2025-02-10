@@ -1,12 +1,29 @@
 namespace BoH.Models;
 
 using BoH.Interfaces;
+using System.ComponentModel;
 
 /// <inheritdoc/>
-public class Cell : ICell, IIconHolder
+public class Cell : ICell, IIconHolder//, INotifyPropertyChanged
 {
+    private (int X, int Y) _position;
     /// <inheritdoc/>
-    public (int X, int Y) Position { get; }
+    public (int X, int Y) Position
+    {
+        get => _position;
+        private set
+        {
+            if (_position != value)
+            {
+                _position = value;
+                //OnPropertyChanged(nameof(Position));
+                //OnPropertyChanged(nameof(PositionString)); // Обновляем строку при изменении позиции
+            }
+        }
+    }
+
+
+    public string PositionString => $"({Position.X}, {Position.Y})";
 
     /// <inheritdoc/>
     /// <exception cref="ArgumentException">
@@ -40,7 +57,9 @@ public class Cell : ICell, IIconHolder
     public void Clear()
     {
         Content = null;
+        //OnPropertyChanged(nameof(Content));
     }
+
 
     /// <inheritdoc/>
     /// <exception cref="ArgumentException"/>
@@ -71,4 +90,11 @@ public class Cell : ICell, IIconHolder
     }
 
     public override int GetHashCode() => HashCode.Combine(Position.X, Position.Y);
+
+    //public event PropertyChangedEventHandler? PropertyChanged;
+
+    //protected virtual void OnPropertyChanged(string propertyName)
+    //{
+    //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    //}
 }

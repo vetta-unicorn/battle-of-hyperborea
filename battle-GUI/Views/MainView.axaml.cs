@@ -2,6 +2,7 @@
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using battle_GUI.ViewModels;
 using BoH.GameLogic;
 using BoH.Interfaces;
 using BoH.Models;
@@ -17,75 +18,61 @@ namespace battle_GUI.Views;
 
 public partial class MainView : UserControl
 {
-    private GameBoard _gameBoard;
-
-    //GameController gameController = new GameController(gameBoardService);
-    //как то надо вынести
-
-    // КУДА ЭТУ ЗАСУНУТЬ и КАК
-    // TurnManager turnManager = new TurnManager(gameBoard, players, actionHandler, scannerHandler);
-    //возможно кудато надо или глобально добавить class TurnManager : ITurnManager ну высмысле экземпляр
-    //из прикрепленного, ищи там, т.к. нихуй не рабоатть
-
-    //возможно вынести игроков сюда, подумаю над этим
-    Player[] players = new Player[2];
-    int playnow;
 
     public MainView()
     {
         InitializeComponent();
-        CreateGameBoard(8, 8); 
-        PopulateGrid();
+        var mainGrid = this.FindControl<Grid>("MainGrid");
+        DataContext = new MainViewModel(mainGrid); // Установка DataContext
     }
 
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-        MainGrid = this.FindControl<Grid>("MainGrid");
     }
 
-    private void CreateGameBoard(int width, int height)
-    {
-        _gameBoard = new GameBoard(width, height);
-    }
+    //private void CreateGameBoard(int width, int height)
+    //{
+    //    _gameBoard = new GameBoard(width, height);
+    //}
 
-    private void PopulateGrid()
-    {
-        MainGrid.RowDefinitions.Clear();
-        MainGrid.ColumnDefinitions.Clear();
+    //private void PopulateGrid()
+    //{
+    //    MainGrid.RowDefinitions.Clear();
+    //    MainGrid.ColumnDefinitions.Clear();
 
-        for (int i = 0; i < _gameBoard.Height; i++)
-        {
-            MainGrid.RowDefinitions.Add(new RowDefinition());
-        }
+    //    for (int i = 0; i < _gameBoard.Height; i++)
+    //    {
+    //        MainGrid.RowDefinitions.Add(new RowDefinition());
+    //    }
 
-        for (int j = 0; j < _gameBoard.Width; j++)
-        {
-            MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
-        }
+    //    for (int j = 0; j < _gameBoard.Width; j++)
+    //    {
+    //        MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
+    //    }
 
         
-        // Далее добавляем кнопки как было описано ранее...
-        for (int y = 0; y < _gameBoard.Height; y++)
-        {
-            for (int x = 0; x < _gameBoard.Width; x++)
-            {
-                var cell = _gameBoard.Cells[x, y];
-                var button = new Button
-                {
-                    Content = $"Cell {cell.Position.X}, {cell.Position.Y}",
-                    Tag = cell, // Сохраняем ссылку на объект Cell
-                    Width = 62, // Установите желаемую ширину
-                    Height = 62 // Установите желаемую высоту
-                };
-                //button.Click += Button_Click;
+    //    // Далее добавляем кнопки как было описано ранее...
+    //    for (int y = 0; y < _gameBoard.Height; y++)
+    //    {
+    //        for (int x = 0; x < _gameBoard.Width; x++)
+    //        {
+    //            var cell = _gameBoard.Cells[x, y];
+    //            var button = new Button
+    //            {
+    //                Content = $"Cell {cell.Position.X}, {cell.Position.Y}",
+    //                Tag = cell, // Сохраняем ссылку на объект Cell
+    //                Width = 62, // Установите желаемую ширину
+    //                Height = 62 // Установите желаемую высоту
+    //            };
+    //            //button.Click += Button_Click;
 
-                Grid.SetColumn(button, x);
-                Grid.SetRow(button, y);
-                MainGrid.Children.Add(button);
-            }
-        }
-    }
+    //            Grid.SetColumn(button, x);
+    //            Grid.SetRow(button, y);
+    //            MainGrid.Children.Add(button);
+    //        }
+    //    }
+    //}
 
     
     //private void Button_Click(object sender, RoutedEventArgs e)
@@ -189,145 +176,134 @@ public partial class MainView : UserControl
 
 
 
-    private int ActionsFlag()
-    {
-        var actions = new Dictionary<string, int>
-     {
-        { "None", 0 },
-        { "Go", 1 },
-        { "Attack", 2 },
-        { "Ability", 3 },
-        { "Skip", 4 },
-        { "End", 5 }
-     };
+    //private int ActionsFlag()
+    //{
+    //    var actions = new Dictionary<string, int>
+    // {
+    //    { "None", 0 },
+    //    { "Go", 1 },
+    //    { "Attack", 2 },
+    //    { "Ability", 3 },
+    //    { "Skip", 4 },
+    //    { "End", 5 }
+    // };
 
-        foreach (var action in actions)
-        {
+    //    foreach (var action in actions)
+    //    {
                         
-          return action.Value;
+    //      return action.Value;
             
-        }
-        return 0;
+    //    }
+    //    return 0;
 
-    }
+    //}
 
-    private void RadioVisible(bool isVisible)
-    {
-        var Text = this.FindControl<TextBlock>("ActionText");
-        Text.IsVisible = isVisible;
-        var None = this.FindControl<RadioButton>("None");
-        None.IsVisible = isVisible;
-        var Go = this.FindControl<RadioButton>("Go");
-        Go.IsVisible = isVisible;
-        var Attack = this.FindControl<RadioButton>("Attack");
-        Attack.IsVisible = isVisible;
-        var Ability = this.FindControl<RadioButton>("Ability");
-        Ability.IsVisible = isVisible;
-        var Skip = this.FindControl<RadioButton>("Skip");
-        Skip.IsVisible = isVisible;
-        var End = this.FindControl<RadioButton>("End");
-        End.IsVisible = isVisible;
-    }
+    //private void RadioVisible(bool isVisible)
+    //{
+    //    var Text = this.FindControl<TextBlock>("ActionText");
+    //    Text.IsVisible = isVisible;
+    //    var None = this.FindControl<RadioButton>("None");
+    //    None.IsVisible = isVisible;
+    //    var Go = this.FindControl<RadioButton>("Go");
+    //    Go.IsVisible = isVisible;
+    //    var Attack = this.FindControl<RadioButton>("Attack");
+    //    Attack.IsVisible = isVisible;
+    //    var Ability = this.FindControl<RadioButton>("Ability");
+    //    Ability.IsVisible = isVisible;
+    //    var Skip = this.FindControl<RadioButton>("Skip");
+    //    Skip.IsVisible = isVisible;
+    //    var End = this.FindControl<RadioButton>("End");
+    //    End.IsVisible = isVisible;
+    //}
 
-    private async void StartGame_Click(object sender, RoutedEventArgs e)
-    {
-        var button = sender as Button;
-        button.Background = new SolidColorBrush(Colors.Pink);
-        // Сетап игры
-        // ------------------------------------------------------------------------------------------------------
-        GameBoardService gameBoardService = new GameBoardService();
-        GameController gameController = new GameController(gameBoardService);
-        await Task.Delay(100);
+    //private async void StartGame_Click(object sender, RoutedEventArgs e)
+    //{
+    //    var button = sender as Button;
+    //    button.Background = new SolidColorBrush(Colors.Pink);
+    //    // Сетап игры
+    //    // ------------------------------------------------------------------------------------------------------
+    //    GameBoardService gameBoardService = new GameBoardService();
+    //    GameController gameController = new GameController(gameBoardService);
+    //    await Task.Delay(100);
         
-        List<IUnit> units = new(){
-            new RusArcher(),
-            new RusWarrior(),
-            new LizardArcher(),
-            new LizardWarrior(),
-            new RusArcher(),
-            new RusWarrior(),
-            new LizardArcher(),
-            new LizardWarrior(),
+    //    List<IUnit> units = new(){
+    //        new RusArcher(),
+    //        new RusWarrior(),
+    //        new LizardArcher(),
+    //        new LizardWarrior(),
+    //        new RusArcher(),
+    //        new RusWarrior(),
+    //        new LizardArcher(),
+    //        new LizardWarrior(),
 
-        };
+    //    };
 
-        players[0] = new Player("Rus");
-        players[1] = new Player("Lizard");
-        playnow = 0;
+    //    players[0] = new Player("Rus");
+    //    players[1] = new Player("Lizard");
+    //    playnow = 0;
 
-        GameBoard gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, units, players);
+    //    GameBoard gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, units, players);
 
-        ActionHandler actionHandler = new(gameBoard);
-        ScannerHandler scannerHandler = new(gameBoard);
-        List<ICell> scannedCells = new();
+    //    ActionHandler actionHandler = new(gameBoard);
+    //    ScannerHandler scannerHandler = new(gameBoard);
+    //    List<ICell> scannedCells = new();
 
-        Render(gameBoard);
+    //    Render(gameBoard);
 
 
        
-    }
+    //}
 
 
 
-    // графический рендер
-    public void Render(IGameBoard gameBoard)
-    {
-        int size = gameBoard.Width;
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                if (gameBoard[x, y] is Cell cell)
-                {
-                    var button = MainGrid.Children[y * 8 + x] as Button;
-                    // проверка на пустое
-                    if (cell.Content == null)
-                    {
-                        button.Background = new SolidColorBrush(Colors.LightGray);
-                        button.Content = " ";
+     //верка на пустое
+    //                if (cell.Content == null)
+    //                {
+    //                    button.Background = new SolidColorBrush(Colors.LightGray);
+    //                    button.Content = " ";
 
-                    }
+    //                }
 
-                    // проверка что юнит
-                    else if (cell.Content is IUnit)
-                    {
-                        // ящеры
-                        if(cell.Icon == "S")
-                        {
-                            button.Background = new SolidColorBrush(Colors.Green);
-                            button.Content = $"{cell.Icon}";
-                        }
+    //                // проверка что юнит
+    //                else if (cell.Content is IUnit)
+    //                {
+    //                    // ящеры
+    //                    if(cell.Icon == "S")
+    //                    {
+    //                        button.Background = new SolidColorBrush(Colors.Green);
+    //                        button.Content = $"{cell.Icon}";
+    //                    }
 
-                        else if (cell.Icon == "2")
-                        {
-                            button.Background = new SolidColorBrush(Colors.LightGreen);
-                            button.Content = button.Content = $"{cell.Icon}";
-                        }
+    //                    else if (cell.Icon == "2")
+    //                    {
+    //                        button.Background = new SolidColorBrush(Colors.LightGreen);
+    //                        button.Content = button.Content = $"{cell.Icon}";
+    //                    }
 
-                        // русы
-                        else if(cell.Icon == "R")
-                        {
-                            button.Background = new SolidColorBrush(Colors.Pink);
-                            button.Content = button.Content = $"{cell.Icon}";
-                        }
+    //                    // русы
+    //                    else if(cell.Icon == "R")
+    //                    {
+    //                        button.Background = new SolidColorBrush(Colors.Pink);
+    //                        button.Content = button.Content = $"{cell.Icon}";
+    //                    }
 
-                        else if (cell.Icon == "Я")
-                        {
-                            button.Background = new SolidColorBrush(Colors.LightPink);
-                            button.Content = button.Content = $"{cell.Icon}";
-                        }
+    //                    else if (cell.Icon == "Я")
+    //                    {
+    //                        button.Background = new SolidColorBrush(Colors.LightPink);
+    //                        button.Content = button.Content = $"{cell.Icon}";
+    //                    }
 
                         
-                    }
-                    else
-                        {
-                            button.Background = new SolidColorBrush(Colors.Black);
-                            button.Content = button.Content = $"{cell.Icon}";
-                        }
-                }
-            }
-        }
-    }
+    //                }
+    //                else
+    //                    {
+    //                        button.Background = new SolidColorBrush(Colors.Black);
+    //                        button.Content = button.Content = $"{cell.Icon}";
+    //                    }
+    //            }
+    //        }
+    //    }
+    //}
 
 }
 

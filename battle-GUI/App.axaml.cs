@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
@@ -18,17 +19,17 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var mainView = new MainView();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel()
+                DataContext = new MainViewModel(mainView.FindControl<Grid>("MainGrid")) // Передаем Grid
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            singleViewPlatform.MainView = new MainView
-            {
-                DataContext = new MainViewModel()
-            };
+            var mainView = new MainView();
+            singleViewPlatform.MainView = mainView;
+            mainView.DataContext = new MainViewModel(mainView.FindControl<Grid>("MainGrid")); // Передаем Grid
         }
 
         base.OnFrameworkInitializationCompleted();
