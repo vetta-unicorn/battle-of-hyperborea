@@ -8,7 +8,7 @@ public class MadDash : IAbility
     public string AbilityId { get; }
 
     /// <inheritdoc/> 
-    public string Name { get; } = "Безумный рывок";
+    public string Name { get; } = "MadDash";
 
     /// <inheritdoc/> 
     public string Description { get; } = "Вернитесь на фазу передвижения. Потеряйте 5 здоровья (не применится, если у применяющего юнита меньше 6 здоровья).";

@@ -9,7 +9,7 @@ public class StunningBlow : IAbility
     public string AbilityId { get; }
 
     /// <inheritdoc/> 
-    public string Name { get; } = "Ошеломляющий удар";
+    public string Name { get; } = "StunningBlow";
 
     /// <inheritdoc/> 
     public string Description { get; } = "Оглушает противника при ударе. Бросается только один кубик";
