@@ -27,6 +27,11 @@ public class MainViewModel : ViewModelBase
     // что-то сервисное
     private GameBoardService gameBoardService { get; set; }
     private GameController gameController { get; set; }
+    ActionHandler actionHandler {  get; set; }
+
+    ScannerHandler scannerHandler { get; set; }
+    List<ICell> scannedCells { get; set; }
+    TurnManager turnManager {  get; set; }
 
     // сетка игрового поля
     public Grid MainGrid { get; private set; }
@@ -60,25 +65,40 @@ public class MainViewModel : ViewModelBase
             new Player("Lizard")
         };
 
-        // какие-то системные штуки, РАЗОБРАТЬСЯ
-        gameBoardService = new GameBoardService();
-        gameController = new GameController(gameBoardService);
-
         // заполняем сетку игрового поля кнопками
         MainGrid = mainGrid;
         SetGrid();
 
-        // генерируем игровую доску
-        _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
+        // какие-то системные штуки, РАЗОБРАТЬСЯ
+        gameBoardService = new GameBoardService();
+        gameController = new GameController(gameBoardService);
+        actionHandler = new(_gameBoard);
+        scannerHandler = new(_gameBoard);
+        scannedCells = new();
+        turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
 
         // добавляем словарь цветов
         UnitColors unitColors = new UnitColors();
         colorMapping = UnitColors.UnitColorMapping;
-
-        Renderer();
     }
 
-    // заполняем доску кнопками
+    // НЕ РАБОТАЕТ
+    //// кнопка начала игры
+    //public void StartGame_Click(object sender, RoutedEventArgs e)
+    //{
+    //    // генерируем игровую доску
+    //    _gameBoard = new GameBoard(8, 8);
+    //    _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
+
+    //    // очищаем доску
+    //    Cleaner();
+    //    SetGrid();
+
+    //    // заполняет сетку цветами и иконками в зависимости от содержания
+    //    Renderer();
+    //}
+
+    // заполняем сетку кнопками
     public void SetGrid()
     {
         MainGrid.RowDefinitions.Clear();
@@ -103,8 +123,9 @@ public class MainViewModel : ViewModelBase
                 {
                     var button = new Button
                     {
-                        Width = 62, 
-                        Height = 62 
+                        Width = 62,
+                        Height = 62,
+                        Tag = (x, y)
                     };
                     button.Click += Button_Click;
                     Grid.SetColumn(button, x);
@@ -116,6 +137,19 @@ public class MainViewModel : ViewModelBase
         }
     }
 
+    // при начале игры сначала очищает сетку от прошлой окраски
+    public void Cleaner()
+    {
+        // Убедимся, что мы очищаем все кнопки в MainGrid
+        foreach (var child in MainGrid.Children)
+        {
+            if (child is Button button)
+            {
+                button.Content = " "; // Очищаем текст кнопки
+                button.Background = new SolidColorBrush(Colors.LightGray); // Устанавливаем светло-серый фон
+            }
+        }
+    }
 
     public void Renderer()
     {
@@ -127,25 +161,36 @@ public class MainViewModel : ViewModelBase
                 if (_gameBoard is not null && _gameBoard[x, y] is Cell cell && cell is not null)
                 {
                     var button = MainGrid.Children[y * 8 + x] as Button;
-                    button.Content = _gameBoard?.Cells[x, y]?.Content?.Icon;
 
-                    if (cell.Content is null || colorMapping is null)
+                    if (button != null)
                     {
-                        button.Background = new SolidColorBrush(Colors.LightGray);
-                    }
+                        button.Content = _gameBoard?.Cells[x, y]?.Content?.Icon;
 
-                    else
-                    {
-                        // проверка на нахождение в словаре IIconHolder
-                        if (colorMapping.ContainsKey(cell.Content.Icon))
+                        if (cell.Content is null || colorMapping is null)
                         {
-                            button.Background = new SolidColorBrush(colorMapping[cell.Content.Icon]);
+                            button.Background = new SolidColorBrush(Colors.LightGray);
+                        }
+
+                        else
+                        {
+                            // проверка на нахождение в словаре IIconHolder
+                            if (colorMapping.ContainsKey(cell.Content.Icon))
+                            {
+                                button.Background = new SolidColorBrush(colorMapping[cell.Content.Icon]);
+                            }
                         }
                     }
 
                 }
             }
         }
+    }
+
+    // НАПИСАТЬ NOTIFICATION ACTION / UNIT ДЛЯ GUI
+
+    public void Scanner()
+    {
+
     }
 
     // тестовая функция нажатия кнопки
@@ -159,6 +204,8 @@ public class MainViewModel : ViewModelBase
             button.Content = "Clicked!";
         }
     }
+
+
 } 
 
 

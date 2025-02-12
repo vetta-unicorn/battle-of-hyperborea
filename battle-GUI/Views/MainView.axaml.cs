@@ -23,12 +23,26 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
         var mainGrid = this.FindControl<Grid>("MainGrid");
-        DataContext = new MainViewModel(mainGrid); // Установка DataContext
+
+        if (mainGrid != null)
+        {
+            DataContext = new MainViewModel(mainGrid); // Установка DataContext
+        }
     }
 
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+    }
+
+    private void StartGame_Click(object sender, RoutedEventArgs e)
+    {
+        // Получите доступ к ViewModel и вызовите метод
+        if (DataContext != null)
+        {
+            var viewModel = (MainViewModel)DataContext;
+            viewModel.StartGame_Click(sender, e);
+        }
     }
 
     //private void CreateGameBoard(int width, int height)
@@ -51,7 +65,7 @@ public partial class MainView : UserControl
     //        MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
     //    }
 
-        
+
     //    // Далее добавляем кнопки как было описано ранее...
     //    for (int y = 0; y < _gameBoard.Height; y++)
     //    {
@@ -74,7 +88,7 @@ public partial class MainView : UserControl
     //    }
     //}
 
-    
+
     //private void Button_Click(object sender, RoutedEventArgs e)
     //{
 
@@ -92,7 +106,7 @@ public partial class MainView : UserControl
 
     //        if (this.FindControl<TextBlock>("ActionText").IsVisible == false)
     //        {
-                
+
     //            button.Background = new SolidColorBrush(Colors.Green);
 
     //            try { SelectUnit(ICell unitCell)}
@@ -151,7 +165,7 @@ public partial class MainView : UserControl
     //                            playnow = (playnow + 1) % 2;
     //                            turnManager.StartNewRound(players[playnow]);
     //                        }
-                            
+
     //                        break;
     //                    }
 
@@ -163,7 +177,7 @@ public partial class MainView : UserControl
     //                    }
 
 
-                    
+
     //                    RadioVisible(false);
 
     //            }
@@ -190,9 +204,9 @@ public partial class MainView : UserControl
 
     //    foreach (var action in actions)
     //    {
-                        
+
     //      return action.Value;
-            
+
     //    }
     //    return 0;
 
@@ -225,7 +239,7 @@ public partial class MainView : UserControl
     //    GameBoardService gameBoardService = new GameBoardService();
     //    GameController gameController = new GameController(gameBoardService);
     //    await Task.Delay(100);
-        
+
     //    List<IUnit> units = new(){
     //        new RusArcher(),
     //        new RusWarrior(),
@@ -251,12 +265,12 @@ public partial class MainView : UserControl
     //    Render(gameBoard);
 
 
-       
+
     //}
 
 
 
-     //верка на пустое
+    //верка на пустое
     //                if (cell.Content == null)
     //                {
     //                    button.Background = new SolidColorBrush(Colors.LightGray);
@@ -293,7 +307,7 @@ public partial class MainView : UserControl
     //                        button.Content = button.Content = $"{cell.Icon}";
     //                    }
 
-                        
+
     //                }
     //                else
     //                    {

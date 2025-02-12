@@ -20,13 +20,23 @@ public class UnitColors: ViewModelBase
 
     public UnitColors()
     {
+        // создаем юнитов
+        RusArcher RusAr = new RusArcher();
+        RusWarrior RusWar = new RusWarrior();
+
+        LizardArcher LizAr = new LizardArcher();
+        LizardWarrior LizWar = new LizardWarrior();
+
+        // препятствие
+        Obstacle obst = new Obstacle();
+
         UnitColorMapping = new Dictionary<string, Avalonia.Media.Color>()
         {
-            { "2", Avalonia.Media.Color.FromRgb(0, 128, 0) }, // ящер-лучник
-            { "S", Avalonia.Media.Color.FromRgb(124, 252, 0) }, // ящер-боец
-            { "R", Avalonia.Media.Color.FromRgb(240, 128, 128) }, // рус-боец
-            { "Я", Avalonia.Media.Color.FromRgb(255, 192, 203) }, // рус-лучник
-            { "B", Avalonia.Media.Color.FromRgb(0, 0, 0) } // препятствие
+            { LizAr.Icon, Avalonia.Media.Color.FromRgb(0, 128, 0) }, // Green
+            { LizWar.Icon, Avalonia.Media.Color.FromRgb(124, 252, 0) }, // Yellow-Green
+            { RusWar.Icon, Avalonia.Media.Color.FromRgb(240, 128, 128) }, // Coral
+            { RusAr.Icon, Avalonia.Media.Color.FromRgb(255, 192, 203) }, // Pink
+            { obst.Icon, Avalonia.Media.Color.FromRgb(0, 0, 0) } // Black
         };
     }
 

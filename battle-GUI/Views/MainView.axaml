@@ -23,7 +23,7 @@
 
 			</Border>
 
-			<Button HorizontalAlignment="Right" Margin="10, 10, 200, 10">Start a new game!</Button>
+			<Button HorizontalAlignment="Right" Margin="10, 10, 200, 10" Click = "StartGame_Click" >Start a new game!</Button>
 
 
 			<StackPanel Orientation="Horizontal">
