@@ -19,7 +19,7 @@ public class TurnManager : ITurnManager
     private readonly IScannerHandler _scannerHandler;
     private int _currentPlayerIndex = 0;
     private List<ICell> _availableUnitsCells = new();
-    private IUnit? _selectedUnit;
+    public IUnit? _selectedUnit { get; set;}
 
     /// <summary>
     /// Инициализирует новый экземпляр менеджера ходов.

@@ -37,7 +37,7 @@
 				<StackPanel Name="Objects" HorizontalAlignment="Right"  Margin="200, 30, 30, 30" >
 
 					<TextBlock Name="ActionText" IsVisible="False" Margin="0 10 0 5">Actions:</TextBlock>
-					<RadioButton Name="None" IsChecked="False" IsVisible="False" GroupName="radioButtonGroup"
+					<RadioButton Name="None" IsChecked="True" IsVisible="False" GroupName="radioButtonGroup"
 					 Content="None"/>
 					<RadioButton Name="Move" IsVisible="False" GroupName="radioButtonGroup"
 					 Content="GO!"/>
@@ -45,7 +45,7 @@
 					 Content="Attack"/>
 					<RadioButton Name="Ability" IsVisible="False" GroupName="radioButtonGroup"
 					 Content="Ability"/>
-					<RadioButton Name="MadDash" IsVisible="False" GroupName="radioButtonAbilityGroupB" Margin="20, 0, 0, 0"
+					<RadioButton Name="MadDash" IsVisible="False" GroupName="radioButtonAbilityGroup" Margin="20, 0, 0, 0"
 					 Content="MadDash"/>
 					<RadioButton Name="StunningBlow" IsVisible="False" GroupName="radioButtonAbilityGroup"  Margin="20, 0, 0, 0" 
 					 Content="StunningBlow"/>

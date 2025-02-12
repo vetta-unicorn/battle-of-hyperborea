@@ -25,7 +25,7 @@ public partial class App : Application
             desktop.MainWindow = new MainWindow
             {
                 
-                DataContext = new MainViewModel(mainView.FindControl<Grid>("MainGrid"), RadioButtons) // Передаем Grid
+                DataContext = new MainViewModel(mainView.FindControl<Grid>("MainGrid"), RadioButtons, mainView.FindControl<TextBlock>("Errors")) // Передаем Grid
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
@@ -33,7 +33,7 @@ public partial class App : Application
             var mainView = new MainView();
             List <object> RadioButtons = mainView.CreateElementsList();
             singleViewPlatform.MainView = mainView;
-            mainView.DataContext = new MainViewModel(mainView.FindControl<Grid>("MainGrid"), RadioButtons); // Передаем Grid
+            mainView.DataContext = new MainViewModel(mainView.FindControl<Grid>("MainGrid"), RadioButtons, mainView.FindControl<TextBlock>("Errors")); // Передаем Grid
         }
 
         base.OnFrameworkInitializationCompleted();

@@ -27,6 +27,7 @@ public class MainViewModel : ViewModelBase
     // листы юнитов и игроков
     private List<IUnit> _unitList { get; set; }
     private Player[] players { get; set; }
+    private int playnow;
 
     // что-то сервисное
     private GameBoardService gameBoardService { get; set; }
@@ -34,7 +35,8 @@ public class MainViewModel : ViewModelBase
 
     // сетка игрового поля
     public Grid MainGrid { get; private set; }
-    public List<object> _RadioButtons {  get; set; }
+    public List<object> RadioButtons {  get; set; }
+    public TextBlock TextErrors { get; set; }
 
     // словарь цветов юнитов
     Dictionary<string, Color>? colorMapping { get; set; }
@@ -44,7 +46,7 @@ public class MainViewModel : ViewModelBase
     TurnManager turnManager { get; set; }
 
 
-    public MainViewModel(Grid mainGrid, List<object> RadioButtons)
+    public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors)
     {
         // создаем доску
         _gameBoard = new GameBoard(8, 8);
@@ -69,24 +71,26 @@ public class MainViewModel : ViewModelBase
             new Player("Lizard")
         };
 
-        // какие-то системные штуки, РАЗОБРАТЬСЯ
         gameBoardService = new GameBoardService();
         gameController = new GameController(gameBoardService);
 
         // заполняем сетку игрового поля кнопками
         MainGrid = mainGrid;
-        _RadioButtons = RadioButtons;
+        RadioButtons = _RadioButtons;
+        TextErrors = _TextErrors;
+        playnow = 0;
         SetGrid();
 
         // генерируем игровую доску
         _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
         ActionHandler actionHandler = new(_gameBoard);
         ScannerHandler scannerHandler = new(_gameBoard);
-        TurnManager turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
+         turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
 
         // добавляем словарь цветов
         UnitColors unitColors = new UnitColors();
         colorMapping = UnitColors.UnitColorMapping;
+        turnManager.StartNewRound(players[0]);
 
         Renderer();
     }
@@ -165,17 +169,45 @@ public class MainViewModel : ViewModelBase
     // тестовая функция нажатия кнопки
     public void Button_Click(object sender, RoutedEventArgs e)
     {
+
+        TextErrors.Text = " ";
+
         // Логика обработки нажатия кнопки
         var button = sender as Button;
-
-        //var coordinates = (ValueTuple<int, int>)button.Tag;
-        
-
-        if (button != null)
+        RoundViewModel progress = new RoundViewModel();
+        int X=-1;
+        int Y=-1;
+        var coordinates = button.Tag;
+        if (coordinates is (int x, int y))
         {
-            // Например, можно изменить текст кнопки
-            button.Content = "Clicked!";
+            X=x; Y=y;
         }
+
+
+            if (button != null)
+            { 
+
+                 if (RadioButtons[0] is TextBlock text )
+                 {
+                      if (!text.IsVisible)
+                      {
+                         //тут функция которая при первом нажатии
+                         progress.TheFirstChoice(button, turnManager, _gameBoard[X, Y], TextErrors, RadioButtons);
+
+                    
+                      }
+
+                    else
+                    {
+                    //тут функция для второго нажатия
+                      progress.TheSecondChoice(RadioButtons, TextErrors, turnManager, gameController, players, playnow);
+                      Renderer();
+                     }
+                 }
+
+
+
+            }
     }
 } 
 
