@@ -200,7 +200,7 @@ public class MainViewModel : ViewModelBase
                     else
                     {
                     //тут функция для второго нажатия
-                      progress.TheSecondChoice(RadioButtons, TextErrors, turnManager, gameController, players, playnow);
+                      progress.TheSecondChoice(RadioButtons, TextErrors, turnManager, gameController, players, playnow, _gameBoard[X, Y]);
                       Renderer();
                      }
                  }
@@ -208,6 +208,38 @@ public class MainViewModel : ViewModelBase
 
 
             }
+    }
+
+    public void ScannerVisible (object sender, RoutedEventArgs e)
+    {
+        var radioButton = sender as RadioButton;
+        if ( radioButton !=null)
+        {
+            switch (radioButton.Name)
+            {
+                case "Move":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Move);
+
+
+                        break;
+                    }
+                case "Attack":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Attack);
+
+
+                        break;
+                    }
+                case "End":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Ability);
+
+                        break;
+                    }
+                    
+            }
+        }
     }
 } 
 

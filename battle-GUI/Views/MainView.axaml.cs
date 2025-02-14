@@ -27,8 +27,7 @@ public partial class MainView : UserControl
         var mainGrid = this.FindControl<Grid>("MainGrid");
         var TextErrors = this.FindControl<TextBlock>("Errors");
         List<object> RadioButtons = CreateElementsList();
-        DataContext = new MainViewModel(mainGrid, RadioButtons, TextErrors); // Установка DataContext
-        
+        DataContext = new MainViewModel(mainGrid, RadioButtons, TextErrors); // Установка DataContext 
     }
 
     private void InitializeComponent()
@@ -39,20 +38,14 @@ public partial class MainView : UserControl
     public List <object> CreateElementsList()
     {
         List<object> elements = new List<object>();
-
         var StackPanel = this.FindControl<StackPanel>("Objects");
-
         if (StackPanel != null)
         {
-
             foreach (var child in StackPanel.Children)
             {
                 elements.Add(child);
-
-
             }
         }
-
         return elements;
     }
 }
