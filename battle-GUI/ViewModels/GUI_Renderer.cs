@@ -12,6 +12,8 @@ namespace battle_GUI.ViewModels;
 
 public class Renderer_ViewModels: ViewModelBase
 {
+    public Renderer_ViewModels() { }
+
     public void Renderer(GameBoard _gameBoard, Grid MainGrid, Dictionary<string, Color>? colorMapping)
     {
         int size = _gameBoard.Width;

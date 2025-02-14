@@ -36,8 +36,9 @@ public class MainViewModel : ViewModelBase
     // сетка игрового поля
     public Grid MainGrid { get; private set; }
 
-    // словарь цветов юнитов
+    // словарь цветов юнитов и перекрасок
     Dictionary<string, Color>? colorMapping { get; set; }
+    Dictionary<string, Color>? scannerMapping { get; set; }
 
 
     public MainViewModel(Grid mainGrid)
@@ -79,12 +80,17 @@ public class MainViewModel : ViewModelBase
         // добавляем словарь цветов
         UnitColors unitColors = new UnitColors();
         colorMapping = UnitColors.UnitColorMapping;
+
+        // добавляем словарь перекраски для сканера
+        scannerMapping = UnitColors.ScannerColorMapping;
     }
 
 
     // кнопка начала игры
     public void StartGame_Click(object sender, RoutedEventArgs e)
     {
+        Renderer_ViewModels renderer = new Renderer_ViewModels();
+
         // Здесь мы ЗАНОВО создаем доску и игроков тк юниты добавляют к игракам СВЕРХУ
         _gameBoard = new GameBoard(8, 8);
         players = new Player[]
@@ -96,7 +102,7 @@ public class MainViewModel : ViewModelBase
         _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
 
         // заполняет сетку цветами и иконками в зависимости от содержания
-        Renderer();
+        renderer.Renderer(_gameBoard, MainGrid, colorMapping);
     }
 
     // заполняем сетку кнопками

@@ -48,26 +48,54 @@ public class GameBoardService : IGameBoardService
             throw new InvalidOperationException(
                 $"Поле {width}x{height} слишком мало для размещения юнитов");
 
-        // Размещение юнитов первого игрока (верхняя строка)
-        int column = 0;
-        foreach (var unit in players[0].Units)
+        if (units.Count == 8)
         {
-            if (column >= width) break;
-            var cell = gameBoard[column, 0];
-            AddObjectToGameBoard(unit as IIconHolder, cell);
-            cell.UpdateIcon();
-            column++;
+            // Размещение юнитов первого игрока (верхняя строка)
+            int column = 0;
+            foreach (var unit in players[0].Units)
+            {
+                if (column >= width) break;
+                var cell = gameBoard[column, 0];
+                AddObjectToGameBoard(unit as IIconHolder, cell);
+                cell.UpdateIcon();
+                column+=2;
+            }
+
+            // Размещение юнитов второго игрока (нижняя строка)
+            column = width - 1;
+            foreach (var unit in players[1].Units)
+            {
+                if (column < 0) break;
+                var cell = gameBoard[column, height - 1];
+                AddObjectToGameBoard(unit as IIconHolder, cell);
+                cell.UpdateIcon();
+                column-=2;
+            }
         }
 
-        // Размещение юнитов второго игрока (нижняя строка)
-        column = width - 1;
-        foreach (var unit in players[1].Units)
+        else
         {
-            if (column < 0) break;
-            var cell = gameBoard[column, height - 1];
-            AddObjectToGameBoard(unit as IIconHolder, cell);
-            cell.UpdateIcon();
-            column--;
+            // Размещение юнитов первого игрока (верхняя строка)
+            int column = 0;
+            foreach (var unit in players[0].Units)
+            {
+                if (column >= width) break;
+                var cell = gameBoard[column, 0];
+                AddObjectToGameBoard(unit as IIconHolder, cell);
+                cell.UpdateIcon();
+                column++;
+            }
+
+            // Размещение юнитов второго игрока (нижняя строка)
+            column = width - 1;
+            foreach (var unit in players[1].Units)
+            {
+                if (column < 0) break;
+                var cell = gameBoard[column, height - 1];
+                AddObjectToGameBoard(unit as IIconHolder, cell);
+                cell.UpdateIcon();
+                column--;
+            }
         }
 
         // Генерация препятствий
