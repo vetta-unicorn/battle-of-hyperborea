@@ -52,6 +52,7 @@ public class ConsoleGameBoardRenderer : IGameBoardRenderer
             PrintHorizontalBorder(size);
         }
     }
+
     /// <summary>
     /// Выводит горизонтальную границу для игрового поля.
     /// Например, для поля шириной 3 будет выведено: +---+---+---+

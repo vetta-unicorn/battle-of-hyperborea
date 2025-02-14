@@ -45,7 +45,13 @@ public class MainViewModel : ViewModelBase
         // создаем доску
         _gameBoard = new GameBoard(8, 8);
 
-        // создаем лист юнитов
+        // создаем лист игроков
+        players = new Player[]
+        {
+            new Player("Rus"),
+            new Player("Lizard")
+        };
+
         _unitList = new List<IUnit>
         {
             new RusArcher(),
@@ -56,13 +62,6 @@ public class MainViewModel : ViewModelBase
             new LizardArcher(),
             new RusWarrior(),
             new LizardWarrior()
-        }; 
-
-        // создаем лист игроков
-        players = new Player[]
-        {
-            new Player("Rus"),
-            new Player("Lizard")
         };
 
         // заполняем сетку игрового поля кнопками
@@ -82,21 +81,23 @@ public class MainViewModel : ViewModelBase
         colorMapping = UnitColors.UnitColorMapping;
     }
 
-    // НЕ РАБОТАЕТ
-    //// кнопка начала игры
-    //public void StartGame_Click(object sender, RoutedEventArgs e)
-    //{
-    //    // генерируем игровую доску
-    //    _gameBoard = new GameBoard(8, 8);
-    //    _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
 
-    //    // очищаем доску
-    //    Cleaner();
-    //    SetGrid();
+    // кнопка начала игры
+    public void StartGame_Click(object sender, RoutedEventArgs e)
+    {
+        // Здесь мы ЗАНОВО создаем доску и игроков тк юниты добавляют к игракам СВЕРХУ
+        _gameBoard = new GameBoard(8, 8);
+        players = new Player[]
+        {
+            new Player("Rus"),
+            new Player("Lizard")
+        };
 
-    //    // заполняет сетку цветами и иконками в зависимости от содержания
-    //    Renderer();
-    //}
+        _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
+
+        // заполняет сетку цветами и иконками в зависимости от содержания
+        Renderer();
+    }
 
     // заполняем сетку кнопками
     public void SetGrid()
@@ -137,54 +138,6 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    // при начале игры сначала очищает сетку от прошлой окраски
-    public void Cleaner()
-    {
-        // Убедимся, что мы очищаем все кнопки в MainGrid
-        foreach (var child in MainGrid.Children)
-        {
-            if (child is Button button)
-            {
-                button.Content = " "; // Очищаем текст кнопки
-                button.Background = new SolidColorBrush(Colors.LightGray); // Устанавливаем светло-серый фон
-            }
-        }
-    }
-
-    public void Renderer()
-    {
-        int size = _gameBoard.Width;
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                if (_gameBoard is not null && _gameBoard[x, y] is Cell cell && cell is not null)
-                {
-                    var button = MainGrid.Children[y * 8 + x] as Button;
-
-                    if (button != null)
-                    {
-                        button.Content = _gameBoard?.Cells[x, y]?.Content?.Icon;
-
-                        if (cell.Content is null || colorMapping is null)
-                        {
-                            button.Background = new SolidColorBrush(Colors.LightGray);
-                        }
-
-                        else
-                        {
-                            // проверка на нахождение в словаре IIconHolder
-                            if (colorMapping.ContainsKey(cell.Content.Icon))
-                            {
-                                button.Background = new SolidColorBrush(colorMapping[cell.Content.Icon]);
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-    }
 
     // НАПИСАТЬ NOTIFICATION ACTION / UNIT ДЛЯ GUI
 
