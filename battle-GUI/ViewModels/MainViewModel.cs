@@ -48,7 +48,7 @@ public class MainViewModel : ViewModelBase
    
 
 
-    public MainViewModel(Grid mainGrid, List<object> RadioButtons)
+    public MainViewModel(Grid mainGrid, List<object> RadioButtons, )
     {
         // создаем доску
         _gameBoard = new GameBoard(8, 8);

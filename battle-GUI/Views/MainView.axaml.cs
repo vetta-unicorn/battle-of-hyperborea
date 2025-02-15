@@ -25,10 +25,11 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
         var mainGrid = this.FindControl<Grid>("MainGrid");
+        var TextErrors = this.FindControl<TextBlock>("Errors");
         List<object> RadioButtons = CreateElementsList();
-        DataContext = new MainViewModel(mainGrid, RadioButtons); // Установка DataContext
-        
+        DataContext = new MainViewModel(mainGrid, RadioButtons, TextErrors); // Установка DataContext 
     }
+
 
     private void InitializeComponent()
     {
