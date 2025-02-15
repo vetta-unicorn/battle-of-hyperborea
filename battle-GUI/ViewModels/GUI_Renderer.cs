@@ -55,7 +55,7 @@ public class Renderer_ViewModels: ViewModelBase
 
         for (int y = 0; y < size; y++)
         {
-            for (int x = 0; x < gameBoard.Height; x++)
+            for (int x = 0; x < size; x++)
             {
                 if (gameBoard is not null && gameBoard[x, y] is Cell cell && cell is not null)
                 {
