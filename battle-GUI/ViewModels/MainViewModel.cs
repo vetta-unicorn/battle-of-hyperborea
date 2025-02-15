@@ -45,7 +45,7 @@ public class MainViewModel : ViewModelBase
     Dictionary<string, Color>? colorMapping { get; set; }
     Dictionary<string, Color>? scannerMapping { get; set; }
 
-    TurnManager turnManager { get; set; }
+   
 
 
     public MainViewModel(Grid mainGrid, List<object> RadioButtons)
