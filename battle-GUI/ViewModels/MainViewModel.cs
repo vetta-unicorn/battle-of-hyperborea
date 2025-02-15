@@ -14,6 +14,8 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using HarfBuzzSharp;
 using battle_GUI.Views;
+using System.Windows.Input;
+using Avalonia.Rendering;
 
 namespace battle_GUI.ViewModels;
 
@@ -51,7 +53,6 @@ public class MainViewModel : ViewModelBase
 
 
     public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors)
-
     {
         // создаем доску
         _gameBoard = new GameBoard(8, 8);
@@ -75,13 +76,6 @@ public class MainViewModel : ViewModelBase
             new LizardWarrior()
         };
 
-        // создаем лист игроков
-        players = new Player[]
-        {
-            new Player("Rus"),
-            new Player("Lizard")
-        };
-
         // какие-то системные штуки, РАЗОБРАТЬСЯ
         gameBoardService = new GameBoardService();
         gameController = new GameController(gameBoardService);
@@ -90,13 +84,14 @@ public class MainViewModel : ViewModelBase
         MainGrid = mainGrid;
         RadioButtons = _RadioButtons;
         TextErrors = _TextErrors;
+        playnow = 0;
         SetGrid();
 
         // генерируем игровую доску
         _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
         ActionHandler actionHandler = new(_gameBoard);
         ScannerHandler scannerHandler = new(_gameBoard);
-        TurnManager turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
+        turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
 
         // добавляем словарь цветов
         UnitColors unitColors = new UnitColors();
@@ -104,6 +99,12 @@ public class MainViewModel : ViewModelBase
 
         // добавляем словарь перекраски для сканера
         scannerMapping = UnitColors.ScannerColorMapping;
+
+
+        Renderer_ViewModels renderer = new Renderer_ViewModels();
+        renderer.Renderer(_gameBoard, MainGrid, colorMapping);
+
+        turnManager.StartNewRound(players[0]);
     }
 
 
@@ -121,6 +122,8 @@ public class MainViewModel : ViewModelBase
         };
 
         _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
+
+        
 
         // заполняет сетку цветами и иконками в зависимости от содержания
         renderer.Renderer(_gameBoard, MainGrid, colorMapping);
