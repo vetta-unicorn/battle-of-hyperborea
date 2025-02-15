@@ -39,11 +39,11 @@
 					<TextBlock Name="ActionText" IsVisible="False" Margin="0 10 0 5">Actions:</TextBlock>
 					<RadioButton Name="None" IsChecked="False" IsVisible="False" GroupName="radioButtonGroup"
 					 Content="None"/>
-					<RadioButton Name="Move" IsVisible="False" GroupName="radioButtonGroup"
+					<RadioButton Name="Move" IsVisible="False" GroupName="radioButtonGroup" 
 					 Content="GO!"/>
-					<RadioButton Name="Attack" IsVisible="False" GroupName="radioButtonGroup"
+					<RadioButton Name="Attack" IsVisible="False" GroupName="radioButtonGroup" 
 					 Content="Attack"/>
-					<RadioButton Name="Ability" IsVisible="False" GroupName="radioButtonGroup"
+					<RadioButton Name="Ability" IsVisible="False" GroupName="radioButtonGroup" 
 					 Content="Ability"/>
 					<RadioButton Name="MadDash" IsVisible="False" GroupName="radioButtonAbilityGroupB" Margin="20, 0, 0, 0"
 					 Content="MadDash"/>
