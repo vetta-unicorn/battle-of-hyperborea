@@ -70,6 +70,4 @@ public class RB_ViewModel : ViewModelBase
 
     }
 
-
-
 }

@@ -27,6 +27,7 @@ public class MainViewModel : ViewModelBase
     // листы юнитов и игроков
     private List<IUnit> _unitList { get; set; }
     private Player[] players { get; set; }
+    private int playnow;
 
     // что-то сервисное
     private GameBoardService gameBoardService { get; set; }
@@ -198,7 +199,8 @@ public class MainViewModel : ViewModelBase
                 {
                     //тут функция для второго нажатия
                     progress.TheSecondChoice(RadioButtons, TextErrors, turnManager, gameController, players, playnow, _gameBoard[X, Y]);
-                    Renderer();
+                    Renderer_ViewModels Renders = new Renderer_ViewModels();
+                    Renders.Renderer(_gameBoard, MainGrid, colorMapping);
                 }
             }
         }
