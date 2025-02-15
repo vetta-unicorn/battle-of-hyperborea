@@ -39,16 +39,18 @@ public class MainViewModel : ViewModelBase
 
     // сетка игрового поля
     public Grid MainGrid { get; private set; }
-    public List<object> _RadioButtons {  get; set; }
+    public List<object> RadioButtons {  get; set; }
+    public TextBlock TextErrors { get; set; }
 
     // словарь цветов юнитов и перекрасок
     Dictionary<string, Color>? colorMapping { get; set; }
     Dictionary<string, Color>? scannerMapping { get; set; }
 
-   
 
 
-    public MainViewModel(Grid mainGrid, List<object> RadioButtons, )
+
+    public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors)
+
     {
         // создаем доску
         _gameBoard = new GameBoard(8, 8);
@@ -85,7 +87,8 @@ public class MainViewModel : ViewModelBase
 
         // заполняем сетку игрового поля кнопками
         MainGrid = mainGrid;
-        _RadioButtons = RadioButtons;
+        RadioButtons = _RadioButtons;
+        TextErrors = _TextErrors;
         SetGrid();
 
         // генерируем игровую доску
@@ -162,13 +165,6 @@ public class MainViewModel : ViewModelBase
     }
 
 
-    // НАПИСАТЬ NOTIFICATION ACTION / UNIT ДЛЯ GUI
-
-    public void Scanner()
-    {
-
-    }
-
     // тестовая функция нажатия кнопки
     public void Button_Click(object sender, RoutedEventArgs e)
     {
@@ -195,7 +191,6 @@ public class MainViewModel : ViewModelBase
                 {
                     //тут функция которая при первом нажатии
                     progress.TheFirstChoice(button, turnManager, _gameBoard[X, Y], TextErrors, RadioButtons);
-
 
                 }
 
