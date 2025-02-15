@@ -2,11 +2,13 @@
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.ReactiveUI;
 using battle_GUI.ViewModels;
 using BoH.GameLogic;
 using BoH.Interfaces;
 using BoH.Models;
 using BoH.Services;
+using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -23,11 +25,9 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
         var mainGrid = this.FindControl<Grid>("MainGrid");
-
-        if (mainGrid != null)
-        {
-            DataContext = new MainViewModel(mainGrid); // Установка DataContext
-        }
+        List<object> RadioButtons = CreateElementsList();
+        DataContext = new MainViewModel(mainGrid, RadioButtons); // Установка DataContext
+        
     }
 
     private void InitializeComponent()
@@ -35,15 +35,28 @@ public partial class MainView : UserControl
         AvaloniaXamlLoader.Load(this);
     }
 
-    private void StartGame_Click(object sender, RoutedEventArgs e)
+    public List <object> CreateElementsList()
     {
-        // Получите доступ к ViewModel и вызовите метод
-        if (DataContext != null)
+        List<object> elements = new List<object>();
+
+        var StackPanel = this.FindControl<StackPanel>("Objects");
+
+        if (StackPanel != null)
         {
-            var viewModel = (MainViewModel)DataContext;
-            viewModel.StartGame_Click(sender, e);
+
+            foreach (var child in StackPanel.Children)
+            {
+                elements.Add(child);
+
+
+            }
         }
+
+        return elements;
     }
+}
+    
+
 
     //private void CreateGameBoard(int width, int height)
     //{

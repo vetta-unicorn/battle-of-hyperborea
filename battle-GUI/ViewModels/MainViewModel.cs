@@ -12,6 +12,8 @@ using DynamicData;
 using Avalonia.Interactivity;
 //using System.Drawing;
 using Avalonia.Media;
+using HarfBuzzSharp;
+using battle_GUI.Views;
 
 namespace battle_GUI.ViewModels;
 
@@ -19,6 +21,8 @@ public class MainViewModel : ViewModelBase
 {
     // доска
     private GameBoard _gameBoard { get; set; }
+    private List<object> _RadioButtonsAction { get; set; }
+    private List<object> _RadioButtonsAbility { get; set; }
 
     // листы юнитов и игроков
     private List<IUnit> _unitList { get; set; }
@@ -35,13 +39,16 @@ public class MainViewModel : ViewModelBase
 
     // сетка игрового поля
     public Grid MainGrid { get; private set; }
+    public List<object> _RadioButtons {  get; set; }
 
     // словарь цветов юнитов и перекрасок
     Dictionary<string, Color>? colorMapping { get; set; }
     Dictionary<string, Color>? scannerMapping { get; set; }
 
+    TurnManager turnManager { get; set; }
 
-    public MainViewModel(Grid mainGrid)
+
+    public MainViewModel(Grid mainGrid, List<object> RadioButtons)
     {
         // создаем доску
         _gameBoard = new GameBoard(8, 8);
@@ -65,17 +72,27 @@ public class MainViewModel : ViewModelBase
             new LizardWarrior()
         };
 
-        // заполняем сетку игрового поля кнопками
-        MainGrid = mainGrid;
-        SetGrid();
+        // создаем лист игроков
+        players = new Player[]
+        {
+            new Player("Rus"),
+            new Player("Lizard")
+        };
 
         // какие-то системные штуки, РАЗОБРАТЬСЯ
         gameBoardService = new GameBoardService();
         gameController = new GameController(gameBoardService);
-        actionHandler = new(_gameBoard);
-        scannerHandler = new(_gameBoard);
-        scannedCells = new();
-        turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
+
+        // заполняем сетку игрового поля кнопками
+        MainGrid = mainGrid;
+        _RadioButtons = RadioButtons;
+        SetGrid();
+
+        // генерируем игровую доску
+        _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
+        ActionHandler actionHandler = new(_gameBoard);
+        ScannerHandler scannerHandler = new(_gameBoard);
+        TurnManager turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
 
         // добавляем словарь цветов
         UnitColors unitColors = new UnitColors();
@@ -132,7 +149,7 @@ public class MainViewModel : ViewModelBase
                     {
                         Width = 62,
                         Height = 62,
-                        Tag = (x, y)
+                        Tag = (X: x, Y: y)
                     };
                     button.Click += Button_Click;
                     Grid.SetColumn(button, x);
@@ -157,6 +174,10 @@ public class MainViewModel : ViewModelBase
     {
         // Логика обработки нажатия кнопки
         var button = sender as Button;
+
+        //var coordinates = (ValueTuple<int, int>)button.Tag;
+        
+
         if (button != null)
         {
             // Например, можно изменить текст кнопки
