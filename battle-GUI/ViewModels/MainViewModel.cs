@@ -211,6 +211,8 @@ public class MainViewModel : ViewModelBase
 
     public void ScannerVisible(object sender, RoutedEventArgs e)
     {
+        Renderer_ViewModels Renders = new Renderer_ViewModels();
+        
         var radioButton = sender as RadioButton;
         if (radioButton != null)
         {
@@ -219,21 +221,19 @@ public class MainViewModel : ViewModelBase
                 case "Move":
                     {
                         List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Move);
-
-
+                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "Attack":
                     {
                         List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Attack);
-
-
+                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "End":
                     {
                         List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Ability);
-
+                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
 
