@@ -27,6 +27,7 @@ public class MainViewModel : ViewModelBase
     // листы юнитов и игроков
     private List<IUnit> _unitList { get; set; }
     private Player[] players { get; set; }
+    private int playnow;
 
     // что-то сервисное
     private GameBoardService gameBoardService { get; set; }
@@ -39,7 +40,8 @@ public class MainViewModel : ViewModelBase
 
     // сетка игрового поля
     public Grid MainGrid { get; private set; }
-    public List<object> _RadioButtons {  get; set; }
+    public List<object> RadioButtons {  get; set; }
+    public TextBlock TextErrors { get; set; }
 
     // словарь цветов юнитов и перекрасок
     Dictionary<string, Color>? colorMapping { get; set; }
@@ -47,7 +49,9 @@ public class MainViewModel : ViewModelBase
 
 
 
-    public MainViewModel(Grid mainGrid, List<object> RadioButtons)
+
+    public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors)
+
     {
         // создаем доску
         _gameBoard = new GameBoard(8, 8);
@@ -84,7 +88,8 @@ public class MainViewModel : ViewModelBase
 
         // заполняем сетку игрового поля кнопками
         MainGrid = mainGrid;
-        _RadioButtons = RadioButtons;
+        RadioButtons = _RadioButtons;
+        TextErrors = _TextErrors;
         SetGrid();
 
         // генерируем игровую доску
@@ -161,30 +166,80 @@ public class MainViewModel : ViewModelBase
     }
 
 
-    // НАПИСАТЬ NOTIFICATION ACTION / UNIT ДЛЯ GUI
-
-    public void Scanner()
-    {
-
-    }
-
     // тестовая функция нажатия кнопки
     public void Button_Click(object sender, RoutedEventArgs e)
     {
+        TextErrors.Text = " ";
+
         // Логика обработки нажатия кнопки
         var button = sender as Button;
+        RoundViewModel progress = new RoundViewModel();
+        int X = -1;
+        int Y = -1;
+        var coordinates = button.Tag;
+        if (coordinates is (int x, int y))
+        {
+            X = x; Y = y;
+        }
 
-        //var coordinates = (ValueTuple<int, int>)button.Tag;
-        
 
         if (button != null)
         {
-            // Например, можно изменить текст кнопки
-            button.Content = "Clicked!";
+
+            if (RadioButtons[0] is TextBlock text)
+            {
+                if (!text.IsVisible)
+                {
+                    //тут функция которая при первом нажатии
+                    progress.TheFirstChoice(button, turnManager, _gameBoard[X, Y], TextErrors, RadioButtons);
+
+                }
+
+                else
+                {
+                    //тут функция для второго нажатия
+                    progress.TheSecondChoice(RadioButtons, TextErrors, turnManager, gameController, players, playnow, _gameBoard[X, Y]);
+                    Renderer_ViewModels Renders = new Renderer_ViewModels();
+                    Renders.Renderer(_gameBoard, MainGrid, colorMapping);
+                }
+            }
         }
+
     }
 
 
+
+    public void ScannerVisible(object sender, RoutedEventArgs e)
+    {
+        var radioButton = sender as RadioButton;
+        if (radioButton != null)
+        {
+            switch (radioButton.Name)
+            {
+                case "Move":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Move);
+
+
+                        break;
+                    }
+                case "Attack":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Attack);
+
+
+                        break;
+                    }
+                case "End":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Ability);
+
+                        break;
+                    }
+
+            }
+        }
+    }
 } 
 
 
