@@ -27,13 +27,37 @@ public partial class MainView : UserControl
         var mainGrid = this.FindControl<Grid>("MainGrid");
         var TextErrors = this.FindControl<TextBlock>("Errors");
         List<object> RadioButtons = CreateElementsList();
-        DataContext = new MainViewModel(mainGrid, RadioButtons, TextErrors); // Установка DataContext 
-    }
 
+        if (mainGrid != null && RadioButtons != null && TextErrors != null)
+        {
+            DataContext = new MainViewModel(mainGrid, RadioButtons, TextErrors); // Установка DataContext 
+        }
+    }
 
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+    }
+
+
+    private void StartGame_Click(object sender, RoutedEventArgs e)
+    {
+        // Получите доступ к ViewModel и вызовите метод
+        if (DataContext != null)
+        {
+            var viewModel = (MainViewModel)DataContext;
+            viewModel.StartGame_Click(sender, e);
+        }
+    }
+
+    public void ScannerVisible(object sender, RoutedEventArgs e)
+    {
+        // Получите доступ к ViewModel и вызовите метод
+        if (DataContext != null)
+        {
+            var viewModel = (MainViewModel)DataContext;
+            viewModel.ScannerVisible(sender, e);
+        }
     }
 
     public List <object> CreateElementsList()
@@ -52,9 +76,10 @@ public partial class MainView : UserControl
 
             }
         }
-
         return elements;
     }
+
+
 }
     
 

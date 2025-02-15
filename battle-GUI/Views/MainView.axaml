@@ -23,7 +23,8 @@
 
 			</Border>
 
-			<Button HorizontalAlignment="Right" Margin="10, 10, 200, 10" Click = "StartGame_Click" >Start a new game!</Button>
+			<Button HorizontalAlignment="Right" Margin="10, 10, 200, 10" Click ="StartGame_Click">Start a new game!</Button>
+
 
 
 			<StackPanel Orientation="Horizontal">
@@ -40,11 +41,11 @@
 					<RadioButton Name="None" IsChecked="False" IsVisible="False" GroupName="radioButtonGroup"
 					 Content="None"/>
 					<RadioButton Name="Move" IsVisible="False" GroupName="radioButtonGroup"
-					 Content="GO!"/>
+					 Content="GO!" Checked="ScannerVisible"/>
 					<RadioButton Name="Attack" IsVisible="False" GroupName="radioButtonGroup"
-					 Content="Attack"/>
+					 Content="Attack" Checked="ScannerVisible"/>
 					<RadioButton Name="Ability" IsVisible="False" GroupName="radioButtonGroup"
-					 Content="Ability"/>
+					 Content="Ability" Checked="ScannerVisible"/>
 					<RadioButton Name="MadDash" IsVisible="False" GroupName="radioButtonAbilityGroupB" Margin="20, 0, 0, 0"
 					 Content="MadDash"/>
 					<RadioButton Name="StunningBlow" IsVisible="False" GroupName="radioButtonAbilityGroup"  Margin="20, 0, 0, 0" 
