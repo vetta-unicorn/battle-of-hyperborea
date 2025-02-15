@@ -172,20 +172,77 @@ public class MainViewModel : ViewModelBase
     // тестовая функция нажатия кнопки
     public void Button_Click(object sender, RoutedEventArgs e)
     {
+        TextErrors.Text = " ";
+
         // Логика обработки нажатия кнопки
         var button = sender as Button;
+        RoundViewModel progress = new RoundViewModel();
+        int X = -1;
+        int Y = -1;
+        var coordinates = button.Tag;
+        if (coordinates is (int x, int y))
+        {
+            X = x; Y = y;
+        }
 
-        //var coordinates = (ValueTuple<int, int>)button.Tag;
-        
 
         if (button != null)
         {
-            // Например, можно изменить текст кнопки
-            button.Content = "Clicked!";
+
+            if (RadioButtons[0] is TextBlock text)
+            {
+                if (!text.IsVisible)
+                {
+                    //тут функция которая при первом нажатии
+                    progress.TheFirstChoice(button, turnManager, _gameBoard[X, Y], TextErrors, RadioButtons);
+
+
+                }
+
+                else
+                {
+                    //тут функция для второго нажатия
+                    progress.TheSecondChoice(RadioButtons, TextErrors, turnManager, gameController, players, playnow, _gameBoard[X, Y]);
+                    Renderer();
+                }
+            }
         }
+
     }
 
 
+
+    public void ScannerVisible(object sender, RoutedEventArgs e)
+    {
+        var radioButton = sender as RadioButton;
+        if (radioButton != null)
+        {
+            switch (radioButton.Name)
+            {
+                case "Move":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Move);
+
+
+                        break;
+                    }
+                case "Attack":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Attack);
+
+
+                        break;
+                    }
+                case "End":
+                    {
+                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Ability);
+
+                        break;
+                    }
+
+            }
+        }
+    }
 } 
 
 
