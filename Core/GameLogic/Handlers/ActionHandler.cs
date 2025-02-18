@@ -24,12 +24,12 @@ public class ActionHandler : IActionHandler
     /// <inheritdoc/>
     public void HandleMovement(IUnit movingUnit, ICell destination, List<ICell> legalMoves)
     {
-        if (movingUnit.OccupiedCell == null) throw new ArgumentNullException("Юнит не был поставлен на поле.");
-        if (legalMoves.Count == 0) throw new ArgumentException("Список доступных координат пуст.");
+        if (movingUnit.OccupiedCell == null) throw new ArgumentNullException("The unit was not placed on the gameboard.");
+        if (legalMoves.Count == 0) throw new ArgumentException("The list of available coordinates is empty.");
         if (!legalMoves.Any(cell => cell.Position.X == destination.Position.X && cell.Position.Y == destination.Position.Y))
-            throw new InvalidOperationException("Клетка не находится в радиусе передвижения.");
+            throw new InvalidOperationException("The cell is not located within the movement radius or there an obstacle in the cage.");
 
-        if (destination.IsOccupied()) throw new InvalidOperationException("Клетка занята, передвижение невозможно.");
+        if (destination.IsOccupied()) throw new InvalidOperationException("The cage is occupied, movement is impossible.");
 
         ICell originalCell = movingUnit.OccupiedCell;
         (int x, int y) originalPosition = originalCell.Position;
@@ -47,9 +47,9 @@ public class ActionHandler : IActionHandler
     /// <inheritdoc/>
     public void HandleAttack(IUnit attacker, ICell targetedCell, List<ICell> legalAttackLocations)
     {
-        if (!legalAttackLocations.Contains(targetedCell)) throw new InvalidOperationException("Клетка не находится в радиусе атаки.");
-        if (targetedCell.Content is IObstacle) throw new InvalidOperationException("Нельзя атаковать препятствие.");
-        if (targetedCell.Content is null) throw new InvalidOperationException("Выбрана пустая клетка.");
+        if (!legalAttackLocations.Contains(targetedCell)) throw new InvalidOperationException("The cell is not in the attack range.");
+        if (targetedCell.Content is IObstacle) throw new InvalidOperationException("You can't attack an obstacle.");
+        if (targetedCell.Content is null) throw new InvalidOperationException("An empty cell is selected.");
 
         if (targetedCell.Content is IUnit target)
         {
@@ -57,16 +57,16 @@ public class ActionHandler : IActionHandler
             attacker.ChangeTurnPhase();
             OnUpdatingGameBoard?.Invoke(_gameBoard);
         }
-        else throw new InvalidDataException("Неизвестный тип объекта в клетке.");
+        else throw new InvalidDataException("Unknown type of object in the cage.");
     }
 
     /// <inheritdoc/>
     public void HandleAbility(IUnit attacker, IAbility usedAbility, ICell targetedCell, List<ICell> legalAttackLocations)
     {
-        if (!legalAttackLocations.Contains(targetedCell)) throw new InvalidOperationException("Клетка не находится в радиусе атаки.");
-        if (!attacker.Abilities.Contains(usedAbility)) throw new InvalidOperationException("Способность отсутствует у юнита.");
-        if (targetedCell.Content is IObstacle) throw new InvalidOperationException("Нельзя атаковать препятствие.");
-        if (targetedCell.Content is null) throw new InvalidOperationException("Выбрана пустая клетка.");
+        if (!legalAttackLocations.Contains(targetedCell)) throw new InvalidOperationException("The cell is not in the attack range.");
+        if (!attacker.Abilities.Contains(usedAbility)) throw new InvalidOperationException("The ability is missing from the unit.");
+        if (targetedCell.Content is IObstacle) throw new InvalidOperationException("You can't attack an obstacle.");
+        if (targetedCell.Content is null) throw new InvalidOperationException("An empty cell is selected.");
 
         if (targetedCell.Content is IUnit target)
         {
@@ -74,7 +74,7 @@ public class ActionHandler : IActionHandler
             attacker.ChangeTurnPhase();
             OnUpdatingGameBoard?.Invoke(_gameBoard);
         }
-        else throw new InvalidDataException("Неизвестный тип объекта в клетке.");
+        else throw new InvalidDataException("Unknown type of object in the cage.");
     }
 
     /// <inheritdoc/>

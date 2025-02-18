@@ -24,8 +24,10 @@ public class RoundViewModel : ViewModelBase
         try
         {
             turnManager.SelectUnit(cell);
+            if(turnManager._selectedUnit!=null)
+            { 
             button.Background = new SolidColorBrush(Colors.Blue);
-            RB.RadioVisible(RadioButtons, true, turnManager._selectedUnit);
+            RB.RadioVisible(RadioButtons, true, turnManager._selectedUnit);}
         }
         catch (InvalidOperationException)
         {
@@ -37,7 +39,8 @@ public class RoundViewModel : ViewModelBase
         }
     }
 
-    public void TheSecondChoice(List<object> RadioButtons, TextBlock Errors, TurnManager turnManager, GameController gameController, Player[] players, int playnow, ICell cell)
+    public void TheSecondChoice(List<object> RadioButtons, TextBlock Errors, TurnManager turnManager, GameController gameController, Player[] players, int playnow, 
+        ICell cell, Grid MainGrid)
     {
         RB_ViewModel RB = new RB_ViewModel();
         string Action = RB.ActionFlag(RadioButtons, "radioButtonGroup");
@@ -64,12 +67,10 @@ public class RoundViewModel : ViewModelBase
                     {
                         Errors.Text = "!";
                     }
-                    catch (InvalidDataException)
+                    catch (InvalidOperationException errors)
                     {
-                        Errors.Text = "Movement is not carried out on the cage.";
+                        Errors.Text = errors.Message;
                     }
-
-
                     break;
                 }
             case "Attack":
@@ -83,10 +84,15 @@ public class RoundViewModel : ViewModelBase
                     {
                         Errors.Text = "!";
                     }
-                    catch (InvalidDataException)
+                    catch (InvalidDataException qq)
                     {
-                        Errors.Text = "The attack is not carried out on the cell.";
+                        Errors.Text = qq.Message;
                     }
+                    catch(InvalidOperationException qq)
+                    { 
+                        Errors.Text = qq.Message;
+                    }
+                    
                     break;
                 }
             case "Ability":
@@ -110,9 +116,13 @@ public class RoundViewModel : ViewModelBase
                                 {
                                     Errors.Text = "!";
                                 }
-                                catch (InvalidDataException)
+                                catch (InvalidDataException qq )
                                 {
-                                    Errors.Text = "The activation of the ability is not performed on the cell.";
+                                    Errors.Text = qq.Message;
+                                }
+                                catch (InvalidOperationException qq)
+                                {
+                                    Errors.Text = qq.Message;
                                 }
                                 break;
 
@@ -128,9 +138,13 @@ public class RoundViewModel : ViewModelBase
                                 {
                                     Errors.Text = "!";
                                 }
-                                catch (InvalidDataException)
+                                catch (InvalidDataException qq)
                                 {
-                                    Errors.Text = "The activation of the ability is not performed on the cell.";
+                                    Errors.Text = qq.Message;
+                                }
+                                catch (InvalidOperationException qq)
+                                {
+                                    Errors.Text = qq.Message;
                                 }
                                 break;
 
@@ -145,6 +159,7 @@ public class RoundViewModel : ViewModelBase
                     if (gameController.CheckVictoryCondition(players))
                     {
                         Errors.Text = "Victory!!!";
+                        MainGrid.IsEnabled = false;
                     }
                     else
                     {

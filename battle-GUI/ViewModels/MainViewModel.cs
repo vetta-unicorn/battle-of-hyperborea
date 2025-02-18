@@ -99,18 +99,15 @@ public class MainViewModel : ViewModelBase
 
         // добавляем словарь перекраски для сканера
         scannerMapping = UnitColors.ScannerColorMapping;
-
-
-        Renderer_ViewModels renderer = new Renderer_ViewModels();
-        renderer.Renderer(_gameBoard, MainGrid, colorMapping);
-
-        turnManager.StartNewRound(players[0]);
+        Renderer_ViewModels renderer = new Renderer_ViewModels();       
     }
 
 
     // кнопка начала игры
     public void StartGame_Click(object sender, RoutedEventArgs e)
     {
+        RB_ViewModel RB = new RB_ViewModel();
+        RB.RadioVisible(RadioButtons, false);
         Renderer_ViewModels renderer = new Renderer_ViewModels();
 
         // Здесь мы ЗАНОВО создаем доску и игроков тк юниты добавляют к игракам СВЕРХУ
@@ -120,13 +117,27 @@ public class MainViewModel : ViewModelBase
             new Player("Rus"),
             new Player("Lizard")
         };
+        
+        _unitList = new List<IUnit>
+        {
+            new RusArcher(),
+            new LizardArcher(),
+            new RusWarrior(),
+            new LizardWarrior(),
+            new RusArcher(),
+            new LizardArcher(),
+            new RusWarrior(),
+            new LizardWarrior()
+        };
 
         _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
 
-        
-
+        ActionHandler actionHandler = new(_gameBoard);
+        ScannerHandler scannerHandler = new(_gameBoard);
+        turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
         // заполняет сетку цветами и иконками в зависимости от содержания
         renderer.Renderer(_gameBoard, MainGrid, colorMapping);
+        turnManager.StartNewRound(players[0]);
     }
 
     // заполняем сетку кнопками
@@ -176,6 +187,8 @@ public class MainViewModel : ViewModelBase
 
         // Логика обработки нажатия кнопки
         var button = sender as Button;
+        if (button != null)
+        {
         RoundViewModel progress = new RoundViewModel();
         int X = -1;
         int Y = -1;
@@ -186,8 +199,8 @@ public class MainViewModel : ViewModelBase
         }
 
 
-        if (button != null)
-        {
+        
+        
 
             if (RadioButtons[0] is TextBlock text)
             {
@@ -201,7 +214,7 @@ public class MainViewModel : ViewModelBase
                 else
                 {
                     //тут функция для второго нажатия
-                    progress.TheSecondChoice(RadioButtons, TextErrors, turnManager, gameController, players, playnow, _gameBoard[X, Y]);
+                    progress.TheSecondChoice(RadioButtons, TextErrors, turnManager, gameController, players, playnow, _gameBoard[X, Y], MainGrid);
                     Renderer_ViewModels Renders = new Renderer_ViewModels();
                     Renders.Renderer(_gameBoard, MainGrid, colorMapping);
                 }
@@ -224,19 +237,19 @@ public class MainViewModel : ViewModelBase
                 case "Move":
                     {
                         List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Move);
-                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
+                        //Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "Attack":
                     {
                         List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Attack);
-                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
+                        //Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "End":
                     {
                         List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Ability);
-                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
+                        //Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
 

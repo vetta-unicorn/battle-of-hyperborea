@@ -3,6 +3,7 @@ namespace BoH.GameLogic;
 using BoH.Interfaces;
 using BoH.Models;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 /// <inheritdoc cref="ITurnManager"/>
 /// <remarks>
@@ -168,9 +169,26 @@ public class TurnManager : ITurnManager
                     if (target is ICell destination)
                     {
                         _availableUnitsCells.Remove(_selectedUnit.OccupiedCell);
+                        try 
+                        {                        
                         _actionHandler.HandleMovement(_selectedUnit, destination, availableCells);
+                        }
+                        catch (InvalidOperationException qq)
+                        {
+                            throw new InvalidOperationException(qq.Message);
+                        }
+                        catch(ArgumentNullException qq)
+                        {
+                            throw new InvalidOperationException(qq.Message);
+                        }
+                        catch(ArgumentException qq)
+                        {
+                            throw new InvalidOperationException(qq.Message);
+                        }
+                        finally { 
                         _availableUnitsCells.Add(_selectedUnit.OccupiedCell);
-                        OnTurnStateChanged?.Invoke(_selectedUnit);
+                        OnTurnStateChanged?.Invoke(_selectedUnit);}
+
                     }
                     else throw new InvalidDataException("Передвижение осуществляется не на клетку.");
                     break;
@@ -178,20 +196,36 @@ public class TurnManager : ITurnManager
                     ArgumentNullException.ThrowIfNull(availableCells);
                     if (target is ICell targetedCellForAttack)
                     {
-                        _actionHandler.HandleAttack(_selectedUnit, targetedCellForAttack, availableCells);
-                        OnTurnStateChanged?.Invoke(_selectedUnit);
+                        try { _actionHandler.HandleAttack(_selectedUnit, targetedCellForAttack, availableCells); }
+                        catch(InvalidOperationException ex)
+                        {
+                            throw new InvalidOperationException(ex.Message);
+                        }
+                        catch (InvalidDataException ex)
+                        { 
+                            throw new InvalidOperationException(ex.Message);
+                        }
+                        finally{ OnTurnStateChanged?.Invoke(_selectedUnit); }
                     }
-                    else throw new InvalidDataException("Атака осуществляется не на клетку.");
+                    else throw new InvalidDataException("The attack is not carried out on the cell.");
                     break;
                 case ActionType.Ability:
                     ArgumentNullException.ThrowIfNull(availableCells);
                     ArgumentNullException.ThrowIfNull(usedAbility);
                     if (target is ICell targetedCellForAbility)
                     {
-                        _actionHandler.HandleAbility(_selectedUnit, usedAbility, targetedCellForAbility, availableCells);
-                        OnTurnStateChanged?.Invoke(_selectedUnit);
+                        try{ _actionHandler.HandleAbility(_selectedUnit, usedAbility, targetedCellForAbility, availableCells); }
+                        catch(InvalidOperationException qq)
+                        {
+                            throw new InvalidOperationException(qq.Message);
+                        }
+                        catch (InvalidDataException qq)
+                        {
+                            throw new InvalidOperationException(qq.Message);
+                        }
+                        finally { OnTurnStateChanged?.Invoke(_selectedUnit); }
                     }
-                    else throw new InvalidDataException("Активация способности осуществляется не на клетку.");
+                    else throw new InvalidDataException("The activation of the ability is not performed on the cell.");
                     break;
                 case ActionType.Skip:
                     _actionHandler.HandleSkip(_selectedUnit);
