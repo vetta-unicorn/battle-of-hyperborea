@@ -49,9 +49,6 @@ public class MainViewModel : ViewModelBase
     Dictionary<string, Color>? colorMapping { get; set; }
     Dictionary<string, Color>? scannerMapping { get; set; }
 
-
-
-
     public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors)
     {
         // создаем доску
@@ -105,6 +102,7 @@ public class MainViewModel : ViewModelBase
         renderer.Renderer(_gameBoard, MainGrid, colorMapping);
 
         turnManager.StartNewRound(players[0]);
+
     }
 
 
@@ -214,6 +212,8 @@ public class MainViewModel : ViewModelBase
 
     public void ScannerVisible(object sender, RoutedEventArgs e)
     {
+        Renderer_ViewModels renderer = new Renderer_ViewModels();
+
         var radioButton = sender as RadioButton;
         if (radioButton != null)
         {
@@ -221,22 +221,20 @@ public class MainViewModel : ViewModelBase
             {
                 case "Move":
                     {
-                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Move);
-
-
+                        List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Move);
+                        renderer.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "Attack":
                     {
-                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Attack);
-
-
+                        List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Attack);
+                        renderer.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "End":
                     {
-                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Ability);
-
+                        List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Ability);
+                        renderer.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
 
