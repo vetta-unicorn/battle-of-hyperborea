@@ -17,8 +17,6 @@ public class RoundViewModel : ViewModelBase
 
     public void TheFirstChoice(Button button, TurnManager turnManager, ICell cell, TextBlock Errors, List<object> RadioButtons)
     {
-
-
         RB_ViewModel RB = new RB_ViewModel();
 
         try
