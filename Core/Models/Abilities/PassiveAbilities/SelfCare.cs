@@ -7,7 +7,7 @@ public class SelfCare : IAbility
     public string AbilityId { get; }
 
     /// <inheritdoc/> 
-    public string Name { get; } = "Самолечение";
+    public string Name { get; } = "SelfCare";
 
     /// <inheritdoc/> 
     public string Description { get; } = "В конце хода юнит лечит себя на 1-6 здоровья";

@@ -62,7 +62,7 @@ public class RB_ViewModel : ViewModelBase
     {
         foreach (var child in RadioButtons)
         {
-            if (child is RadioButton radioButton && radioButton.GroupName == Group && radioButton.IsChecked == true) return radioButton.Name;
+            if (child is RadioButton radioButton && radioButton != null && radioButton.Name != null &&  radioButton.GroupName == Group && radioButton.IsChecked == true) return radioButton.Name;
 
         }
 

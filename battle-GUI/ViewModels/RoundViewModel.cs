@@ -97,7 +97,7 @@ public class RoundViewModel : ViewModelBase
                 }
             case "Ability":
                 {
-                    string Ability = RB.ActionFlag(RadioButtons, "radioButtonGroup");
+                    string Ability = RB.ActionFlag(RadioButtons, "radioButtonAbilityGroup");
                     switch (Ability)
                     {
                         case "0":

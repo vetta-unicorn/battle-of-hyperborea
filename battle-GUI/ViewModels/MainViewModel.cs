@@ -134,6 +134,7 @@ public class MainViewModel : ViewModelBase
 
         ActionHandler actionHandler = new(_gameBoard);
         ScannerHandler scannerHandler = new(_gameBoard);
+
         turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
         // заполняет сетку цветами и иконками в зависимости от содержания
         renderer.Renderer(_gameBoard, MainGrid, colorMapping);
@@ -169,7 +170,11 @@ public class MainViewModel : ViewModelBase
                         Height = 62,
                         Tag = (X: x, Y: y)
                     };
-                    button.Click += Button_Click;
+
+                    if (Button_Click != null)
+                    {
+                        button.Click += Button_Click;
+                    }
                     Grid.SetColumn(button, x);
                     Grid.SetRow(button, y);
                     MainGrid.Children.Add(button);
@@ -236,23 +241,29 @@ public class MainViewModel : ViewModelBase
             {
                 case "Move":
                     {
-                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Move);
-                        //Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
+                        List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Move);
+                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "Attack":
                     {
-                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Attack);
-                        //Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
+                        List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Attack);
+                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
+                case "Ability":
+                    {
+                        List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Ability);
+                        Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
+                        break;
+                    }
+                case "None":
+                case "Skip":
                 case "End":
                     {
-                        List<ICell> scannedCels = turnManager.ProcessScanner(ActionType.Ability);
-                        //Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
+                        Renders.Renderer(_gameBoard, MainGrid, colorMapping);
                         break;
                     }
-
             }
         }
     }

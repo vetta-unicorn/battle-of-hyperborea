@@ -47,10 +47,9 @@ public class ActionHandler : IActionHandler
     /// <inheritdoc/>
     public void HandleAttack(IUnit attacker, ICell targetedCell, List<ICell> legalAttackLocations)
     {
-        if (!legalAttackLocations.Contains(targetedCell)) throw new InvalidOperationException("The cell is not in the attack range.");
         if (targetedCell.Content is IObstacle) throw new InvalidOperationException("You can't attack an obstacle.");
+        if (!legalAttackLocations.Contains(targetedCell)) throw new InvalidOperationException("The cell is not in the attack range.");
         if (targetedCell.Content is null) throw new InvalidOperationException("An empty cell is selected.");
-
         if (targetedCell.Content is IUnit target)
         {
             attacker.Attack(target);
@@ -63,9 +62,9 @@ public class ActionHandler : IActionHandler
     /// <inheritdoc/>
     public void HandleAbility(IUnit attacker, IAbility usedAbility, ICell targetedCell, List<ICell> legalAttackLocations)
     {
-        if (!legalAttackLocations.Contains(targetedCell)) throw new InvalidOperationException("The cell is not in the attack range.");
-        if (!attacker.Abilities.Contains(usedAbility)) throw new InvalidOperationException("The ability is missing from the unit.");
         if (targetedCell.Content is IObstacle) throw new InvalidOperationException("You can't attack an obstacle.");
+        if (!legalAttackLocations.Contains(targetedCell)) throw new InvalidOperationException("The cell is not in the attack range.");
+        if (!attacker.Abilities.Contains(usedAbility)) throw new InvalidOperationException("The ability is missing from the unit.");   
         if (targetedCell.Content is null) throw new InvalidOperationException("An empty cell is selected.");
 
         if (targetedCell.Content is IUnit target)
