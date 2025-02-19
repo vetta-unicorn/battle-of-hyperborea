@@ -49,9 +49,6 @@ public class MainViewModel : ViewModelBase
     Dictionary<string, Color>? colorMapping { get; set; }
     Dictionary<string, Color>? scannerMapping { get; set; }
 
-
-
-
     public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors)
     {
         // создаем доску
