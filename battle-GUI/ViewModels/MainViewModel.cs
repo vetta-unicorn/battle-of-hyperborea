@@ -16,6 +16,7 @@ using HarfBuzzSharp;
 using battle_GUI.Views;
 using System.Windows.Input;
 using Avalonia.Rendering;
+using Avalonia.Input;
 
 namespace battle_GUI.ViewModels;
 
@@ -168,9 +169,11 @@ public class MainViewModel : ViewModelBase
                         Tag = (X: x, Y: y)
                     };
 
-                    if (Button_Click != null)
+                    if (Button_Click != null && Button_PointerEnter != null && Button_PointerExit != null)
                     {
                         button.Click += Button_Click;
+                        button.PointerEntered += Button_PointerEnter;
+                        button.PointerExited += Button_PointerExit;
                     }
                     Grid.SetColumn(button, x);
                     Grid.SetRow(button, y);
@@ -179,6 +182,29 @@ public class MainViewModel : ViewModelBase
 
             }
         }
+    }
+
+    private void Button_PointerEnter(object sender, PointerEventArgs e)
+    {
+        var button = sender as Button;
+        var coordinates = button.Tag.ToString().Split(',');
+        int column = int.Parse(coordinates[0]);
+        int row = int.Parse(coordinates[1]);
+
+        // Логика для получения информации о клетке
+        var cellInfo = GetCellInfo(column, row);
+        //DisplayInfo(cellInfo); // Метод для отображения информации
+    }
+
+    private void Button_PointerLeave(object sender, PointerEventArgs e)
+    {
+        ClearInfo(); // Метод для очистки информации
+    }
+
+    private string GetCellInfo(int column, int row)
+    {
+        // Логика для получения информации о клетке (проверка на пустую клетку, юнита или препятствие)
+        // Вернуть строку с информацией
     }
 
 
@@ -199,11 +225,6 @@ public class MainViewModel : ViewModelBase
         {
             X = x; Y = y;
         }
-
-
-        
-        
-
             if (RadioButtons[0] is TextBlock text)
             {
                 if (!text.IsVisible)

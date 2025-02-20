@@ -1,13 +1,20 @@
 ﻿namespace BoH.Models;
 
 using System.ComponentModel;
+using System.Xml.Linq;
 using BoH.Interfaces;
 
 /// <summary>
 /// Базовая реализация боевого юнита.
 /// </summary>
-public class BaseUnit : IUnit, IIconHolder
+public class BaseUnit : IUnit, IIconHolder, INotifyPropertyChanged
 {
+    // штуки для свойств 
+    private string name = "Unit";
+    private int hp = 100;
+    private bool isDead = false;
+    private bool isStunned = false;
+
     /// <summary>
     /// Максимально возможное здоровье юнита.
     /// </summary>
@@ -17,7 +24,12 @@ public class BaseUnit : IUnit, IIconHolder
     public string UnitId { get; }
 
     /// <inheritdoc/>
-    public string UnitName { get; } = "Юнит";
+    public string UnitName
+    {
+        get => name;
+        set { name = value; OnPropertyChanged(nameof(UnitName)); }
+    }
+
 
     /// <inheritdoc/>
     public string Team { get; } = "Dev";
@@ -44,7 +56,12 @@ public class BaseUnit : IUnit, IIconHolder
     private string _icon = "T";
 
     /// <inheritdoc/>
-    public int Hp { get; set; } = 100;
+    public int Hp
+    {
+        get => hp;
+        set { hp = value; OnPropertyChanged(nameof(Hp)); }
+    }
+
 
     /// <inheritdoc/>
     public int Speed { get; set; } = 3;
@@ -62,10 +79,18 @@ public class BaseUnit : IUnit, IIconHolder
     public UnitType UnitType { get; } = UnitType.Melee;
 
     /// <inheritdoc/>
-    public bool IsStunned { get; set; } = false;
+    public bool IsStunned
+    {
+        get => isStunned;
+        set { isStunned = value; OnPropertyChanged(nameof(IsStunned)); }
+    }
 
     /// <inheritdoc/>
-    public bool IsDead { get; private set; } = false;
+    public bool IsDead
+    {
+        get => isDead;
+        set { isDead = value; OnPropertyChanged(nameof(IsDead)); }
+    }
 
     /// <inheritdoc/>
     public TurnPhase CurrentTurnPhase { get; set; }
@@ -208,5 +233,12 @@ public class BaseUnit : IUnit, IIconHolder
             _ => throw new InvalidEnumArgumentException(
                 $"Недопустимое значение фазы хода: {CurrentTurnPhase}")
         };
+    }
+
+    // события
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
