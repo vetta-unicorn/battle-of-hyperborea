@@ -59,6 +59,16 @@
 				</StackPanel>
 
 				<TextBlock Name="Errors" >   </TextBlock>
+				
+				<Border Margin="5" CornerRadius="10" Background="Beige" >
+					<TextBlock Margin="30, 30, 30, 30"
+						 FontSize="16"
+						 HorizontalAlignment="Center"
+						 Name = "Info"
+					     MaxHeight="250">
+					</TextBlock>
+
+			</Border>
 			</StackPanel>
 		</StackPanel>
 

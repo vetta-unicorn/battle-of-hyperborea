@@ -45,12 +45,13 @@ public class MainViewModel : ViewModelBase
     public Grid MainGrid { get; private set; }
     public List<object> RadioButtons {  get; set; }
     public TextBlock TextErrors { get; set; }
+    public TextBlock Info { get; set; }
 
     // словарь цветов юнитов и перекрасок
     Dictionary<string, Color>? colorMapping { get; set; }
     Dictionary<string, Color>? scannerMapping { get; set; }
 
-    public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors)
+    public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors, TextBlock _Info)
     {
         // создаем доску
         _gameBoard = new GameBoard(8, 8);
@@ -82,14 +83,16 @@ public class MainViewModel : ViewModelBase
         MainGrid = mainGrid;
         RadioButtons = _RadioButtons;
         TextErrors = _TextErrors;
+        Info = _Info;
+
         playnow = 0;
         SetGrid();
 
-        // генерируем игровую доску
-        _gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
-        ActionHandler actionHandler = new(_gameBoard);
-        ScannerHandler scannerHandler = new(_gameBoard);
-        turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
+        //// генерируем игровую доску
+        //_gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
+        //ActionHandler actionHandler = new(_gameBoard);
+        //ScannerHandler scannerHandler = new(_gameBoard);
+        //turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
 
         // добавляем словарь цветов
         UnitColors unitColors = new UnitColors();
@@ -97,13 +100,17 @@ public class MainViewModel : ViewModelBase
 
         // добавляем словарь перекраски для сканера
         scannerMapping = UnitColors.ScannerColorMapping;
-        Renderer_ViewModels renderer = new Renderer_ViewModels();       
+        Renderer_ViewModels renderer = new Renderer_ViewModels();
+
+        MainGrid.IsEnabled = false;
     }
 
 
     // кнопка начала игры
     public void StartGame_Click(object sender, RoutedEventArgs e)
     {
+        MainGrid.IsEnabled = true;
+
         RB_ViewModel RB = new RB_ViewModel();
         RB.RadioVisible(RadioButtons, false);
         Renderer_ViewModels renderer = new Renderer_ViewModels();
@@ -169,11 +176,11 @@ public class MainViewModel : ViewModelBase
                         Tag = (X: x, Y: y)
                     };
 
-                    if (Button_Click != null && Button_PointerEnter != null && Button_PointerExit != null)
+                    if (Button_Click != null && Button_PointerEnter != null)
                     {
                         button.Click += Button_Click;
                         button.PointerEntered += Button_PointerEnter;
-                        button.PointerExited += Button_PointerExit;
+                        //button.PointerExited += Button_PointerLeave;
                     }
                     Grid.SetColumn(button, x);
                     Grid.SetRow(button, y);
@@ -184,27 +191,53 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    private void Button_PointerEnter(object sender, PointerEventArgs e)
+    public void Button_PointerEnter(object sender, PointerEventArgs e)
     {
         var button = sender as Button;
-        var coordinates = button.Tag.ToString().Split(',');
-        int column = int.Parse(coordinates[0]);
-        int row = int.Parse(coordinates[1]);
+        int X = -1;
+        int Y = -1;
+        var coordinates = button.Tag;
+        if (coordinates is (int x, int y))
+        {
+            X = x; Y = y;
+        }
 
         // Логика для получения информации о клетке
-        var cellInfo = GetCellInfo(column, row);
-        //DisplayInfo(cellInfo); // Метод для отображения информации
+        var cellInfo = GetCellInfo(X, Y);
+        DisplayInfo(cellInfo); // Метод для отображения информации
     }
 
-    private void Button_PointerLeave(object sender, PointerEventArgs e)
+    public void DisplayInfo(string textInfo)
     {
-        ClearInfo(); // Метод для очистки информации
+        Info.Text = textInfo;
     }
 
-    private string GetCellInfo(int column, int row)
+    //public void Button_PointerLeave(object sender, PointerEventArgs e)
+    //{
+    //    ClearInfo(); // Метод для очистки информации
+    //}
+
+    private string GetCellInfo(int x, int y)
     {
         // Логика для получения информации о клетке (проверка на пустую клетку, юнита или препятствие)
         // Вернуть строку с информацией
+        string st = "";
+
+        if (_gameBoard != null && _gameBoard[x, y] != null && _gameBoard[x, y] is Cell cell)
+        {
+            if (cell.Content is Obstacle)
+            {
+                st = "Obstacle!";
+            }
+
+            else if (cell.Content is IUnit unit)
+            {
+                st = $"Team: {unit.Team}\nName: {unit.UnitName}\n" +
+                    $"Hp: {unit.Hp}\nDefense: {unit.Defence}";
+            }
+        }
+
+        return st;
     }
 
 

@@ -24,13 +24,15 @@ public partial class App : Application
             List<object> RadioButtons = mainView.CreateElementsList();
             var maingrid = mainView.FindControl<Grid>("MainGrid");
             var errors = mainView.FindControl<TextBlock>("Errors");
-            if (mainView != null && maingrid != null && errors != null)
+            var info = mainView.FindControl<TextBlock>("Info");
+
+            if (mainView != null && maingrid != null && errors != null && info != null)
             {
 
                 desktop.MainWindow = new MainWindow
                 {
 
-                    DataContext = new MainViewModel(maingrid, RadioButtons, errors) // Передаем Grid
+                    DataContext = new MainViewModel(maingrid, RadioButtons, errors, info) // Передаем Grid
                 };
             }
         }
@@ -41,9 +43,11 @@ public partial class App : Application
             singleViewPlatform.MainView = mainView;
             var maingrid = mainView.FindControl<Grid>("MainGrid");
             var errors = mainView.FindControl<TextBlock>("Errors");
-            if (mainView != null && maingrid != null && errors != null)
+            var info = mainView.FindControl<TextBlock>("Info");
+
+            if (mainView != null && maingrid != null && errors != null && info != null)
             {
-                mainView.DataContext = new MainViewModel(maingrid, RadioButtons, errors); // Передаем Grid
+                mainView.DataContext = new MainViewModel(maingrid, RadioButtons, errors, info); // Передаем Grid
             }
         }
 

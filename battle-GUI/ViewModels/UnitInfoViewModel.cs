@@ -10,5 +10,5 @@ namespace battle_GUI.ViewModels;
 
 public class UnitInfoViewModel : ViewModelBase
 {
-    public ObservableCollection<IUnit> Units { get; set; } = new ObservableCollection<IUnit>();
+    //public ObservableCollection<IUnit> Units { get; set; } = new ObservableCollection<IUnit>();
 }

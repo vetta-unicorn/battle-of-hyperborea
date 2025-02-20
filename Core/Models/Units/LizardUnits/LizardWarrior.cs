@@ -3,7 +3,7 @@ namespace BoH.Models;
 public class LizardWarrior : BaseUnit
 {
     protected override int MaxHealth { get; } = 10;
-    public LizardWarrior() : base("Ящер-Боец", 'S', "Lizard")
+    public LizardWarrior() : base("Lizard-Warrior", 'S', "Lizard")
     {
         Abilities.Add(new MadDash());
         Hp = MaxHealth;

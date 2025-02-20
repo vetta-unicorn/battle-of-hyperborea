@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -26,11 +27,13 @@ public partial class MainView : UserControl
         InitializeComponent();
         var mainGrid = this.FindControl<Grid>("MainGrid");
         var TextErrors = this.FindControl<TextBlock>("Errors");
+        var Info = this.FindControl<TextBlock>("Info");
+
         List<object> RadioButtons = CreateElementsList();
 
-        if (mainGrid != null && RadioButtons != null && TextErrors != null)
+        if (mainGrid != null && RadioButtons != null && TextErrors != null && Info != null)
         {
-            DataContext = new MainViewModel(mainGrid, RadioButtons, TextErrors); // Установка DataContext 
+            DataContext = new MainViewModel(mainGrid, RadioButtons, TextErrors, Info); // Установка DataContext 
         }
     }
 
@@ -49,6 +52,26 @@ public partial class MainView : UserControl
             viewModel.StartGame_Click(sender, e);
         }
     }
+
+    private void Button_PointerEnter(object sender, PointerEventArgs e)
+    {
+        // Получите доступ к ViewModel и вызовите метод
+        if (DataContext != null)
+        {
+            var viewModel = (MainViewModel)DataContext;
+            viewModel.Button_PointerEnter(sender, e);
+        }
+    }
+
+    //private void Button_PointerLeave(object sender, PointerEventArgs e)
+    //{
+    //    // Получите доступ к ViewModel и вызовите метод
+    //    if (DataContext != null)
+    //    {
+    //        var viewModel = (MainViewModel)DataContext;
+    //        viewModel.Button_PointerLeave(sender, e);
+    //    }
+    //}
 
     public void ScannerVisible(object sender, RoutedEventArgs e)
     {
