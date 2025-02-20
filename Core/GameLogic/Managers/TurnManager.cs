@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 public class TurnManager : ITurnManager
 {
     private IGameBoard _gameBoard;
-    private Player _currentPlayer;
+    public Player _currentPlayer;
     private readonly Player[] _players;
     private readonly IActionHandler _actionHandler;
     private readonly IScannerHandler _scannerHandler;

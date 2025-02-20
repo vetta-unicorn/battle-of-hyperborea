@@ -162,8 +162,7 @@ public class RoundViewModel : ViewModelBase
                     else
                     {
                         turnManager.EndTurn();
-                        playnow = (playnow + 1) % 2;
-                        turnManager.StartNewRound(players[playnow]);
+                        turnManager.StartNewRound(turnManager._currentPlayer);
                     }
 
                     break;
