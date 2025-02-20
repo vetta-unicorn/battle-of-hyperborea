@@ -22,10 +22,11 @@ public class RoundViewModel : ViewModelBase
         try
         {
             turnManager.SelectUnit(cell);
-            if(turnManager._selectedUnit!=null)
-            { 
-            button.Background = new SolidColorBrush(Colors.Blue);
-            RB.RadioVisible(RadioButtons, true, turnManager._selectedUnit);}
+            if (turnManager._selectedUnit != null)
+            {
+                button.Background = new SolidColorBrush(Colors.Blue);
+                RB.RadioVisible(RadioButtons, true, turnManager._selectedUnit);
+            }
         }
         catch (InvalidOperationException)
         {
@@ -37,7 +38,7 @@ public class RoundViewModel : ViewModelBase
         }
     }
 
-    public void TheSecondChoice(List<object> RadioButtons, TextBlock Errors, TurnManager turnManager, GameController gameController, Player[] players, int playnow, 
+    public void TheSecondChoice(List<object> RadioButtons, TextBlock Errors, TurnManager turnManager, GameController gameController, Player[] players, int playnow,
         ICell cell, Grid MainGrid)
     {
         RB_ViewModel RB = new RB_ViewModel();
@@ -86,11 +87,11 @@ public class RoundViewModel : ViewModelBase
                     {
                         Errors.Text = qq.Message;
                     }
-                    catch(InvalidOperationException qq)
-                    { 
+                    catch (InvalidOperationException qq)
+                    {
                         Errors.Text = qq.Message;
                     }
-                    
+
                     break;
                 }
             case "Ability":
@@ -114,7 +115,7 @@ public class RoundViewModel : ViewModelBase
                                 {
                                     Errors.Text = "!";
                                 }
-                                catch (InvalidDataException qq )
+                                catch (InvalidDataException qq)
                                 {
                                     Errors.Text = qq.Message;
                                 }
@@ -162,8 +163,7 @@ public class RoundViewModel : ViewModelBase
                     else
                     {
                         turnManager.EndTurn();
-                        playnow = (playnow + 1) % 2;
-                        turnManager.StartNewRound(players[playnow]);
+                        turnManager.StartNewRound(turnManager._currentPlayer);
                     }
 
                     break;
