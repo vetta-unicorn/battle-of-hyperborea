@@ -175,10 +175,28 @@ public class RoundViewModel : ViewModelBase
         }
         RB.RadioVisible(RadioButtons, false);
 
+        bool flag = false;
+        foreach (var unit in turnManager._currentPlayer.Units)
+        {
+            if (unit.IsDead == false && unit.CurrentTurnPhase != TurnPhase.End)
+            {
+                return;
+            }
+            else flag = true;
+        }
+        if (flag)
+        {
+            if (gameController.CheckVictoryCondition(players))
+            {
+                Errors.Text = "Victory!!!";
+                MainGrid.IsEnabled = false;
+            }
+            else
+            {
+                turnManager.EndTurn();
+                turnManager.StartNewRound(turnManager._currentPlayer);
+            }
+        }
     }
-
-
-
-
 }
 
