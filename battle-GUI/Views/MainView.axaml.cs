@@ -63,16 +63,6 @@ public partial class MainView : UserControl
         }
     }
 
-    //private void Button_PointerLeave(object sender, PointerEventArgs e)
-    //{
-    //    // Получите доступ к ViewModel и вызовите метод
-    //    if (DataContext != null)
-    //    {
-    //        var viewModel = (MainViewModel)DataContext;
-    //        viewModel.Button_PointerLeave(sender, e);
-    //    }
-    //}
-
     public void ScannerVisible(object sender, RoutedEventArgs e)
     {
         // Получите доступ к ViewModel и вызовите метод

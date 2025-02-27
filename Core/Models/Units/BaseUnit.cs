@@ -156,10 +156,12 @@ public class BaseUnit : IUnit, IIconHolder, INotifyPropertyChanged
     /// <exception cref="InvalidOperationException">Выбрасывается, если юнит мёртв.</exception>
     public void Heal(int amount)
     {
-        if (IsDead) throw new InvalidOperationException("Dead unit can't be healed.");
-
-        Hp = Math.Min(MaxHealth, Hp + amount);
-        OnHealed?.Invoke(this);
+        //if (IsDead) throw new InvalidOperationException("Dead unit can't be healed.");
+        if (!IsDead)
+        {
+            Hp = Math.Min(MaxHealth, Hp + amount);
+            OnHealed?.Invoke(this);
+        }
     }
 
     /// <inheritdoc/>
