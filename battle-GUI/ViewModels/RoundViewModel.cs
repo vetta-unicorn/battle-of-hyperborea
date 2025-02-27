@@ -107,9 +107,16 @@ public class RoundViewModel : ViewModelBase
                         case "MadDash":
                             {
                                 try
-                                {
+                                { 
                                     List<ICell> targetcell = turnManager.ProcessScanner(ActionType.Ability);
-                                    turnManager.ProcessPlayerAction(ActionType.Ability, targetcell, cell, new MadDash());
+                                    foreach (var avi in turnManager._selectedUnit.Abilities)
+                                    {
+                                        if ("MadDash"== avi.Name)
+                                        {
+                                             turnManager.ProcessPlayerAction(ActionType.Ability, targetcell, cell, avi);
+                                        }
+                                    }
+                                    
                                 }
                                 catch (ArgumentNullException)
                                 {
@@ -131,7 +138,13 @@ public class RoundViewModel : ViewModelBase
                                 try
                                 {
                                     List<ICell> targetcell = turnManager.ProcessScanner(ActionType.Ability);
-                                    turnManager.ProcessPlayerAction(ActionType.Ability, targetcell, cell, new StunningBlow());
+                                    foreach (var avi in turnManager._selectedUnit.Abilities)
+                                    {
+                                        if ("StunningBlow" == avi.Name)
+                                        {
+                                            turnManager.ProcessPlayerAction(ActionType.Ability, targetcell, cell, avi);
+                                        }
+                                    }
                                 }
                                 catch (ArgumentNullException)
                                 {
