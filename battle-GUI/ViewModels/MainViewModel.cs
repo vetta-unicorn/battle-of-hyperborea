@@ -196,15 +196,18 @@ public class MainViewModel : ViewModelBase
         var button = sender as Button;
         int X = -1;
         int Y = -1;
-        var coordinates = button.Tag;
-        if (coordinates is (int x, int y))
+        if (button != null)
         {
-            X = x; Y = y;
-        }
+            var coordinates = button.Tag;
+            if (coordinates is (int x, int y))
+            {
+                X = x; Y = y;
+            }
 
-        // Логика для получения информации о клетке
-        var cellInfo = GetCellInfo(X, Y);
-        DisplayInfo(cellInfo); // Метод для отображения информации
+            // Логика для получения информации о клетке
+            var cellInfo = GetCellInfo(X, Y);
+            DisplayInfo(cellInfo); // Метод для отображения информации
+        }
     }
 
     public void DisplayInfo(string textInfo)

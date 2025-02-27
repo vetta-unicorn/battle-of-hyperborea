@@ -43,7 +43,8 @@ public class RoundViewModel : ViewModelBase
     {
         RB_ViewModel RB = new RB_ViewModel();
         string Action = RB.ActionFlag(RadioButtons, "radioButtonGroup");
-
+        if (turnManager != null && turnManager._selectedUnit != null)
+        { 
         switch (Action)
         {
             case "0":
@@ -109,6 +110,7 @@ public class RoundViewModel : ViewModelBase
                                 try
                                 { 
                                     List<ICell> targetcell = turnManager.ProcessScanner(ActionType.Ability);
+                                      
                                     foreach (var avi in turnManager._selectedUnit.Abilities)
                                     {
                                         if ("MadDash"== avi.Name)
@@ -210,6 +212,7 @@ public class RoundViewModel : ViewModelBase
                 turnManager.EndTurn();
                 turnManager.StartNewRound(turnManager._currentPlayer);
             }
+        }
         }
     }
 }
