@@ -10,7 +10,6 @@ using Avalonia.Controls;
 using BoH.GameLogic;
 using DynamicData;
 using Avalonia.Interactivity;
-//using System.Drawing;
 using Avalonia.Media;
 using HarfBuzzSharp;
 using battle_GUI.Views;
@@ -87,12 +86,6 @@ public class MainViewModel : ViewModelBase
 
         playnow = 0;
         SetGrid();
-
-        //// генерируем игровую доску
-        //_gameBoard = (GameBoard)gameBoardService.GenerateGameBoard(8, 8, _unitList, players);
-        //ActionHandler actionHandler = new(_gameBoard);
-        //ScannerHandler scannerHandler = new(_gameBoard);
-        //turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
 
         // добавляем словарь цветов
         UnitColors unitColors = new UnitColors();
@@ -176,11 +169,10 @@ public class MainViewModel : ViewModelBase
                         Tag = (X: x, Y: y)
                     };
 
-                    if (Button_Click != null && Button_PointerEnter != null)
+                    if (button != null && Button_Click != null && Button_PointerEnter != null)
                     {
                         button.Click += Button_Click;
                         button.PointerEntered += Button_PointerEnter;
-                        //button.PointerExited += Button_PointerLeave;
                     }
                     Grid.SetColumn(button, x);
                     Grid.SetRow(button, y);
@@ -215,15 +207,9 @@ public class MainViewModel : ViewModelBase
         Info.Text = textInfo;
     }
 
-    //public void Button_PointerLeave(object sender, PointerEventArgs e)
-    //{
-    //    ClearInfo(); // Метод для очистки информации
-    //}
 
     private string GetCellInfo(int x, int y)
     {
-        // Логика для получения информации о клетке (проверка на пустую клетку, юнита или препятствие)
-        // Вернуть строку с информацией
         string st = "";
 
         if (_gameBoard != null && _gameBoard[x, y] != null && _gameBoard[x, y] is Cell cell)
@@ -249,7 +235,7 @@ public class MainViewModel : ViewModelBase
     }
 
 
-    // тестовая функция нажатия кнопки
+    
     public void Button_Click(object sender, RoutedEventArgs e)
     {
         TextErrors.Text = " ";

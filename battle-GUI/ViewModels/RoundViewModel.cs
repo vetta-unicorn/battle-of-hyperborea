@@ -102,7 +102,7 @@ public class RoundViewModel : ViewModelBase
                     {
                         case "0":
                             {
-                                Errors.Text = "You didn't choose an ability.";
+                                Errors.Text = "You haven't chosen an ability.";
                                 break;
                             }
                         case "MadDash":
@@ -172,7 +172,7 @@ public class RoundViewModel : ViewModelBase
                 {
                     if (gameController.CheckVictoryCondition(players))
                     {
-                        Errors.Text = "Victory!!!";
+                        //Errors.Text = "Victory!!!";
                         MainGrid.IsEnabled = false;
                     }
                     else
