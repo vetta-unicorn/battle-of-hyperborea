@@ -14,7 +14,7 @@ public class GameBoardService : IGameBoardService
     {
         // Валидация входных параметров
         if (players == null || players.Length != 2)
-            throw new ArgumentException("Требуется ровно два игрока", nameof(players));
+            throw new ArgumentException("Only 2 players are needed", nameof(players));
 
         if (units == null)
             throw new ArgumentNullException(nameof(units));
@@ -22,7 +22,7 @@ public class GameBoardService : IGameBoardService
         // Проверка уникальных команд
         var uniqueTeams = units.Select(u => u.Team).Distinct().ToList();
         if (uniqueTeams.Count != 2)
-            throw new ArgumentException("Должно быть ровно две уникальные команды", nameof(units));
+            throw new ArgumentException("There must be only 2 unique teams", nameof(units));
 
         var gameBoard = new GameBoard(width, height);
         var rnd = new Random();
@@ -35,7 +35,7 @@ public class GameBoardService : IGameBoardService
             else if (unit.Team == uniqueTeams[1])
                 players[1].Units.Add(unit);
             else
-                throw new InvalidOperationException($"Юнит принадлежит неизвестной команде: {unit.Team}");
+                throw new InvalidOperationException($"Unit can't be defined to any team: {unit.Team}");
         }
 
         // Проверка вместимости поля
@@ -46,7 +46,7 @@ public class GameBoardService : IGameBoardService
 
         if (maxUnitsPerRow > width || height < 2)
             throw new InvalidOperationException(
-                $"Поле {width}x{height} слишком мало для размещения юнитов");
+                $"Gameboard {width}x{height} is too small for units");
 
         if (units.Count == 8)
         {

@@ -27,7 +27,7 @@ public class Obstacle : IObstacle, IIconHolder
                !char.IsSymbol(value[0]) &&
                !char.IsPunctuation(value[0]))
             {
-                throw new ArgumentException("Иконка юнита должна быть одним печатным символом.");
+                throw new ArgumentException("Unit's icon must be 1 symbol.");
             }
             _icon = value;
         }

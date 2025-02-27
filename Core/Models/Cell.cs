@@ -77,7 +77,7 @@ public class Cell : ICell, IIconHolder//, INotifyPropertyChanged
     {
         if (Position.X < 0 || Position.Y < 0)
         {
-            throw new ArgumentException("Координаты клетки не могут быть отрицательными.");
+            throw new ArgumentException("Coordinates can't be negative.");
         }
         this.Position = Position;
     }

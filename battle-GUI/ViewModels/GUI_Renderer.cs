@@ -41,6 +41,10 @@ public class Renderer_ViewModels: ViewModelBase
                             {
                                 button.Background = new SolidColorBrush(colorMapping[cell.Content.Icon]);
                             }
+                            if (cell.Content is IUnit unit && unit.IsDead == true)
+                            {
+                                button.Background = new SolidColorBrush(Colors.DarkGray);
+                            }
                         }
                     }
 

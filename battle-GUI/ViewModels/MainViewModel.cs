@@ -233,7 +233,12 @@ public class MainViewModel : ViewModelBase
             else if (cell.Content is IUnit unit)
             {
                 st = $"Team: {unit.Team}\nName: {unit.UnitName}\n" +
-                    $"Hp: {unit.Hp}\nDefense: {unit.Defence}";
+                    $"Hp: {unit.Hp}\nDefense: {unit.Defence}\n";
+
+                if (unit.IsDead == true)
+                {
+                    st += "Unit is dead!";
+                }
             }
         }
 

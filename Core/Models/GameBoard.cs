@@ -36,7 +36,7 @@ public class GameBoard : IGameBoard
         {
             if (x < 0 || x >= Width || y < 0 || y >= Height)
             {
-                throw new ArgumentOutOfRangeException("Координаты выходят за пределы игрового поля.");
+                throw new ArgumentOutOfRangeException("Coordinates are out of the gameboard.");
             }
             return Cells[x, y];
         }
@@ -52,7 +52,7 @@ public class GameBoard : IGameBoard
     {
         if (width < 1 || height < 1)
         {
-            throw new ArgumentOutOfRangeException("Размеры игрового поля должны быть больше нуля.");
+            throw new ArgumentOutOfRangeException("Size of the gameboard must be bigger than 0.");
         }
 
         Width = width;
@@ -79,7 +79,7 @@ public class GameBoard : IGameBoard
     {
         if (x < 0 || x >= Width || y < 0 || y >= Height)
         {
-            throw new ArgumentOutOfRangeException("Координаты выходят за пределы игрового поля.");
+            throw new ArgumentOutOfRangeException("Coordinates are out of the gameboard.");
         }
 
         return !Cells[x, y].IsOccupied();

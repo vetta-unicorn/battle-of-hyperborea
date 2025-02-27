@@ -30,7 +30,7 @@ public class Player : IPlayer
     public Player(string team)
     {
         if (string.IsNullOrWhiteSpace(team))
-            throw new ArgumentException("Название команды не может быть пустым.", nameof(team));
+            throw new ArgumentException("Team name can't be null", nameof(team));
 
         Team = team;
     }

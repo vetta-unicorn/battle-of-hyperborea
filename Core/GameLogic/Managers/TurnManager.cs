@@ -40,7 +40,7 @@ public class TurnManager : ITurnManager
         IScannerHandler scannerHandler)
     {
         if (players.Length != 2)
-            throw new ArgumentException("Требуется ровно два игрока", nameof(players));
+            throw new ArgumentException("Only 2 players are needed!", nameof(players));
 
         _gameBoard = gameBoard;
         _players = players;
@@ -66,10 +66,10 @@ public class TurnManager : ITurnManager
     {
         // Валидация и инициализация
         if (firstPlayer == null)
-            throw new ArgumentNullException(nameof(firstPlayer), "Игрок не может быть null.");
+            throw new ArgumentNullException(nameof(firstPlayer), "The played can't be null.");
 
         if (!_players.Contains(firstPlayer))
-            throw new ArgumentException("Игрок не участвует в матче", nameof(firstPlayer));
+            throw new ArgumentException("The player doesn't play in game", nameof(firstPlayer));
 
         // Сброс состояний
         _currentPlayerIndex = Array.IndexOf(_players, firstPlayer);
@@ -117,10 +117,10 @@ public class TurnManager : ITurnManager
     public void SelectUnit(ICell unitCell)
     {
         if (!_availableUnitsCells.Contains(unitCell))
-            throw new InvalidOperationException("Юнит недоступен для выбора.");
+            throw new InvalidOperationException("You can't choose this unit.");
 
         _selectedUnit = unitCell.Content as IUnit ?? 
-            throw new ArgumentNullException("В клетке не было юнита.");
+            throw new ArgumentNullException("There was no unit in the cell.");
         _selectedUnit.OccupiedCell = unitCell;
 
         OnUnitSelected?.Invoke(_selectedUnit);
@@ -190,7 +190,7 @@ public class TurnManager : ITurnManager
                         OnTurnStateChanged?.Invoke(_selectedUnit);}
 
                     }
-                    else throw new InvalidDataException("Передвижение осуществляется не на клетку.");
+                    else throw new InvalidDataException("You're trying to move nowhere.");
                     break;
                 case ActionType.Attack:
                     ArgumentNullException.ThrowIfNull(availableCells);

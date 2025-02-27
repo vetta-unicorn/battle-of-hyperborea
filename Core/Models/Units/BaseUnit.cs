@@ -48,7 +48,7 @@ public class BaseUnit : IUnit, IIconHolder, INotifyPropertyChanged
                !char.IsSymbol(value[0]) &&
                !char.IsPunctuation(value[0]))
             {
-                throw new ArgumentException("Иконка юнита должна быть одним печатным символом.");
+                throw new ArgumentException("Unit icon must be 1 symbol.");
             }
             _icon = value;
         }
@@ -156,7 +156,7 @@ public class BaseUnit : IUnit, IIconHolder, INotifyPropertyChanged
     /// <exception cref="InvalidOperationException">Выбрасывается, если юнит мёртв.</exception>
     public void Heal(int amount)
     {
-        if (IsDead) throw new InvalidOperationException("Мертвый юнит не может быть вылечен.");
+        if (IsDead) throw new InvalidOperationException("Dead unit can't be healed.");
 
         Hp = Math.Min(MaxHealth, Hp + amount);
         OnHealed?.Invoke(this);
@@ -166,10 +166,10 @@ public class BaseUnit : IUnit, IIconHolder, INotifyPropertyChanged
     /// <exception cref="InvalidOperationException"></exception>
     public void PlaceUnit(ICell newPosition)
     {
-        if (IsDead) throw new InvalidOperationException("Мертвый юнит не может двигаться.");
-        if (IsStunned) throw new InvalidOperationException("Оглушенный юнит не может двигаться.");
-        if (CurrentTurnPhase != TurnPhase.Movement) throw new InvalidOperationException("Юнит не в фазе передвижения.");
-        if (newPosition.Content != null) throw new InvalidOperationException("Клетка занята, передвижение невозможно.");
+        if (IsDead) throw new InvalidOperationException("Dead unit can't move.");
+        if (IsStunned) throw new InvalidOperationException("Stunned unit can't move.");
+        if (CurrentTurnPhase != TurnPhase.Movement) throw new InvalidOperationException("Unit is out of action phase!\nFirst action must be move.");
+        if (newPosition.Content != null) throw new InvalidOperationException("Cell is occupied, you can't go there.");
 
         if (OccupiedCell != null) OccupiedCell.Content = null;
         OccupiedCell = newPosition;
@@ -202,9 +202,9 @@ public class BaseUnit : IUnit, IIconHolder, INotifyPropertyChanged
     /// <exception cref="InvalidOperationException"/>
     public void Attack(IUnit target)
     {
-        if (IsDead) throw new InvalidOperationException("Мертвый юнит не может атаковать.");
-        if (CurrentTurnPhase != TurnPhase.Action) throw new InvalidOperationException("Юнит не в фазе действия.");
-        if (target.IsDead) throw new InvalidOperationException("Нельзя атаковать мертвого юнита.");
+        if (IsDead) throw new InvalidOperationException("Dead unit can't attack.");
+        if (CurrentTurnPhase != TurnPhase.Action) throw new InvalidOperationException("Unit is out of action phase!\nFirst action must be move.");
+        if (target.IsDead) throw new InvalidOperationException("You can't attack a dead unit.");
 
         target.TakeDamage(CalculateAttackDamage());
         OnAttack?.Invoke(this);
@@ -231,7 +231,7 @@ public class BaseUnit : IUnit, IIconHolder, INotifyPropertyChanged
             TurnPhase.Action => TurnPhase.End,
             TurnPhase.End => TurnPhase.Movement,
             _ => throw new InvalidEnumArgumentException(
-                $"Недопустимое значение фазы хода: {CurrentTurnPhase}")
+                $"Invalid name of action phase: {CurrentTurnPhase}")
         };
     }
 
