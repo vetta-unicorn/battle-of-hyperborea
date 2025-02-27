@@ -297,18 +297,21 @@ public class MainViewModel : ViewModelBase
             {
                 case "Move":
                     {
+                        Renders.Renderer(_gameBoard, MainGrid, colorMapping);
                         List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Move);
                         Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "Attack":
                     {
+                        Renders.Renderer(_gameBoard, MainGrid, colorMapping);
                         List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Attack);
                         Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
                     }
                 case "Ability":
                     {
+                        Renders.Renderer(_gameBoard, MainGrid, colorMapping);
                         List<ICell> scannedCells = turnManager.ProcessScanner(ActionType.Ability);
                         Renders.ScanRenderer(_gameBoard, MainGrid, scannedCells, scannerMapping);
                         break;
