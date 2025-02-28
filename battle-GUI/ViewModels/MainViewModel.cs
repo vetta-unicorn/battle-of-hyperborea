@@ -174,9 +174,13 @@ public class MainViewModel : ViewModelBase
                         button.Click += Button_Click;
                         button.PointerEntered += Button_PointerEnter;
                     }
-                    Grid.SetColumn(button, x);
-                    Grid.SetRow(button, y);
-                    MainGrid.Children.Add(button);
+
+                    if (button != null)
+                    {
+                        Grid.SetColumn(button, x);
+                        Grid.SetRow(button, y);
+                        MainGrid.Children.Add(button);
+                    }
                 }
 
             }
@@ -195,43 +199,10 @@ public class MainViewModel : ViewModelBase
             {
                 X = x; Y = y;
             }
-
-            // Логика для получения информации о клетке
-            var cellInfo = GetCellInfo(X, Y);
-            DisplayInfo(cellInfo); // Метод для отображения информации
         }
-    }
-
-    public void DisplayInfo(string textInfo)
-    {
-        Info.Text = textInfo;
-    }
-
-
-    private string GetCellInfo(int x, int y)
-    {
-        string st = "";
-
-        if (_gameBoard != null && _gameBoard[x, y] != null && _gameBoard[x, y] is Cell cell)
-        {
-            if (cell.Content is Obstacle)
-            {
-                st = "Obstacle!";
-            }
-
-            else if (cell.Content is IUnit unit)
-            {
-                st = $"Team: {unit.Team}\nName: {unit.UnitName}\n" +
-                    $"Hp: {unit.Hp}\nDefense: {unit.Defence}\n";
-
-                if (unit.IsDead == true)
-                {
-                    st += "Unit is dead!";
-                }
-            }
-        }
-
-        return st;
+        // Логика для получения информации о клетке
+        var cellInfo = unitInfo.GetCellInfo(X, Y, _gameBoard, Info);
+        unitInfo.DisplayInfo(cellInfo, Info); // Метод для отображения информации
     }
 
 
