@@ -209,9 +209,10 @@ public class MainViewModel : ViewModelBase
                 X = x; Y = y;
             }
 
-        // Логика для получения информации о клетке
-        var cellInfo = unitInfo.GetCellInfo(X, Y, _gameBoard, Info);
-        unitInfo.DisplayInfo(cellInfo, Info); // Метод для отображения информации
+            // Логика для получения информации о клетке
+            var cellInfo = unitInfo.GetCellInfo(X, Y, _gameBoard, Info);
+            unitInfo.DisplayInfo(cellInfo, Info); // Метод для отображения информации
+        }
     }
 
     public void Button_Click(object sender, RoutedEventArgs e)
