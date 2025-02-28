@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "battle-GUI", "battle-GUI\ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "battle-GUI.Desktop", "battle-GUI.Desktop\battle-GUI.Desktop.csproj", "{7FA70D2D-323F-410F-873F-BD531D4DFDC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTest", "GameTest\GameTest.csproj", "{5CA3BADF-CDFD-452B-B6AD-E88B8838207C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{7FA70D2D-323F-410F-873F-BD531D4DFDC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FA70D2D-323F-410F-873F-BD531D4DFDC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FA70D2D-323F-410F-873F-BD531D4DFDC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CA3BADF-CDFD-452B-B6AD-E88B8838207C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CA3BADF-CDFD-452B-B6AD-E88B8838207C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CA3BADF-CDFD-452B-B6AD-E88B8838207C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CA3BADF-CDFD-452B-B6AD-E88B8838207C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
