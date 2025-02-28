@@ -52,8 +52,12 @@ public class MainViewModel : ViewModelBase
 
     public MainViewModel(Grid mainGrid, List<object> _RadioButtons, TextBlock _TextErrors, TextBlock _Info)
     {
-        // создаем доску
-        _gameBoard = new GameBoard(8, 8);
+        // инициализируем кнопки
+        _RadioButtonsAction = new List<object>();
+        _RadioButtonsAbility = new List<object>();
+
+       // создаем доску
+       _gameBoard = new GameBoard(8, 8);
 
         // создаем лист игроков
         players = new Player[]
@@ -74,7 +78,7 @@ public class MainViewModel : ViewModelBase
             new LizardWarrior()
         };
 
-        // какие-то системные штуки, РАЗОБРАТЬСЯ
+        // системное
         gameBoardService = new GameBoardService();
         gameController = new GameController(gameBoardService);
 
@@ -83,6 +87,7 @@ public class MainViewModel : ViewModelBase
         RadioButtons = _RadioButtons;
         TextErrors = _TextErrors;
         Info = _Info;
+        scannedCells = new List<ICell>();
 
         playnow = 0;
         SetGrid();
@@ -96,6 +101,12 @@ public class MainViewModel : ViewModelBase
         Renderer_ViewModels renderer = new Renderer_ViewModels();
 
         MainGrid.IsEnabled = false;
+
+        // инициализируем системные штуки
+        actionHandler = new ActionHandler(_gameBoard);
+        scannerHandler = new ScannerHandler(_gameBoard);
+
+        turnManager = new TurnManager(_gameBoard, players, actionHandler, scannerHandler);
     }
 
 
@@ -189,6 +200,8 @@ public class MainViewModel : ViewModelBase
 
     public void Button_PointerEnter(object sender, PointerEventArgs e)
     {
+        UnitInfo unitInfo = new UnitInfo();
+
         var button = sender as Button;
         int X = -1;
         int Y = -1;
@@ -199,14 +212,12 @@ public class MainViewModel : ViewModelBase
             {
                 X = x; Y = y;
             }
-        }
+
         // Логика для получения информации о клетке
         var cellInfo = unitInfo.GetCellInfo(X, Y, _gameBoard, Info);
         unitInfo.DisplayInfo(cellInfo, Info); // Метод для отображения информации
     }
 
-
-    
     public void Button_Click(object sender, RoutedEventArgs e)
     {
         TextErrors.Text = " ";
@@ -243,8 +254,6 @@ public class MainViewModel : ViewModelBase
         }
 
     }
-
-
 
     public void ScannerVisible(object sender, RoutedEventArgs e)
     {
