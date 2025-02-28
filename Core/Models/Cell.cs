@@ -16,8 +16,6 @@ public class Cell : ICell, IIconHolder//, INotifyPropertyChanged
             if (_position != value)
             {
                 _position = value;
-                //OnPropertyChanged(nameof(Position));
-                //OnPropertyChanged(nameof(PositionString)); // Обновляем строку при изменении позиции
             }
         }
     }
@@ -57,7 +55,6 @@ public class Cell : ICell, IIconHolder//, INotifyPropertyChanged
     public void Clear()
     {
         Content = null;
-        //OnPropertyChanged(nameof(Content));
     }
 
 
